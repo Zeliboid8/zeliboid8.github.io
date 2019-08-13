@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <link rel="stylesheet" href="browse-stylesheet.css">
+    <meta name="google-signin-client_id" content="346925839515-g5rho0muuob69h91ivpeh6nrvho870ii.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/api:client.js"></script>
+    <script type="text/javascript" src="cookies.js"></script>
+    <script type="text/javascript" src="browse_requests.js"></script>
+    <script type="text/javascript" src="browse_user_interface.js"></script>
+
+    <title>Alloy — Browse Classes</title>
+</head>
+<body>
+    <div><img src="logo-shadow.svg" id="logo"><h1 id="title">alloy</h1></div>
+    <br>
+    <div class="container">
+        <div class="search-box">
+            <input id="search" class="search-text" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+            onkeyup="filter()" name="" placeholder="Search for a class...">
+
+        </div>
+        <li class="table-header">
+            <div class="col-1">Subject</div>
+            <div class="col-2">Number</div>
+            <div class="col-3">Name</div>
+            <div class="col-4"></div>
+        </li>
+
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <div class="modal-header"></div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+
+        <div id="table-rows"></div>
+    </div>
+    
+    <script>
+        document.getElementById("modal").addEventListener("click", () => {
+            if (modal.style.display == "block") {
+                modal.style.display = 'none';
+            }
+        })
+    </script>
+</body>
+</html>

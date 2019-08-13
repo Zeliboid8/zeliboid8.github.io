@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet');
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet');
+
+body, html {
+    height: 100%;
+    font-size: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+
+html {
+    background-color: rgb(245, 245, 245);
+    background-attachment: fixed;
+}
+
+#logo {
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    height: 80px;
+    width: 80px;
+    vertical-align: middle;
+}
+
+#title {
+    color: rgb(40, 40, 40);
+    display: inline;
+    text-align: center;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 80px;
+    font-weight: normal;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
+    vertical-align: middle;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.container {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.search-box {
+    background: rgb(190, 190, 190);
+    width: 800px;
+    border-radius: 25px;
+    height: 25px;
+    padding: 10px;
+    display: inline-block;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.search-box:hover {
+    background: rgba(200, 200, 200);
+    transition: 0.3s;
+}
+
+.search-text::placeholder {
+    color: rgb(40, 40, 40);
+}
+
+.search-text {
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    padding: 0;
+    color: rgb(25, 25, 25);
+    font-size: 15px;
+    line-height: 25px;
+    font-family: 'Roboto', sans-serif;
+    width: 780px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+li {
+    /* border-radius: 3px; */
+    padding: 25px 30px;
+    display: flex;
+    justify-content: space-between;
+    /* margin-bottom: 10px; */
+}
+
+.table-header {
+    background-color: rgba(0, 142, 187, 0.5);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    font-size: 21px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    /* text-transform: uppercase; */
+    letter-spacing: 0.03em;
+}
+
+.table-row {
+    background-color: rgba(255, 255, 255, 0);
+    border-bottom: 1px solid rgba(150, 150, 150, 0.5);
+    color: black;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.table-row:hover {
+    background-color:  rgb(200, 200, 200, 0.3);
+    transition: 0.3s;
+}
+
+#table-rows {
+    height:400px; 
+    overflow:auto;
+}
+
+#table-rows:hover::-webkit-scrollbar {
+    visibility: visible;
+    transition: 0.5s;
+}
+
+#table-rows:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+    transition: 0.5s;
+}
+
+#table-rows::-webkit-scrollbar {
+    width: 3px;
+    visibility: hidden;
+}
+
+#table-rows::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.4);
+    visibility: hidden;
+}
+
+.col-1 {
+    flex-basis: 15%;
+}
+
+.col-2 {
+    flex-basis: 15%;
+}
+
+.col-3 {
+    flex-basis: 65%;
+}
+
+.col-4 {
+    flex-basis: 5%;
+}
+
+button.select {
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: 15px 15px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: none;
+    padding: 10px 10px;
+    vertical-align: middle;
+    display: inline-block;
+    margin: auto;
+    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+button.select:hover {
+    cursor: pointer;
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: 0.3s;
+}
+
+button.select.add {
+    background-image: url(plus.svg);
+    background-color: rgba(0, 142, 187, 0.7);
+}
+
+button.select.check {
+    background-image: url(check.svg);
+    background-color: rgb(226, 109, 1);
+    transition: 0.3s;
+}
+
+button.select:focus {
+    outline: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(53, 53, 53);
+    background-color: rgba(0, 0, 0, 0.4);
+    -webkit-animation-name: fadein;
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadein;
+    animation-duration: 0.4s;
+}
+
+.modal-content {
+    background-color: rgb(245, 245, 245);
+    margin: 15% auto;
+    padding: 20px;
+    width: 70%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    animation-name: fadein;
+    animation-duration: 0.4s
+}
+
+@keyframes fadein {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: rgb(128,199,221);
+    color: white;
+}
+
+.modal-body {
+    padding: 2px 16px;
+}
