@@ -74,7 +74,7 @@ function clearMessages() {
 
 function loadRecentCourses() {
     let req = new XMLHttpRequest();
-    let userURL = "http://alloy-backend.herokuapp.com/api/user/" + googleID + "/";
+    let userURL = "https://alloy-backend.herokuapp.com/api/user/" + googleID + "/";
     req.open("GET", userURL, true);
     req.onreadystatechange = (e) => {
         if (req.readyState == 4 && req.status == 200) {
@@ -139,7 +139,7 @@ function getRecentCourses(user) {
 
 function loadCourseAssignments(courseID) {
     let req = new XMLHttpRequest();
-    let assignmentsURL = "http://alloy-backend.herokuapp.com/api/course/" + courseID + "/assignments/";
+    let assignmentsURL = "https://alloy-backend.herokuapp.com/api/course/" + courseID + "/assignments/";
     req.open("GET", assignmentsURL, true);
     req.onreadystatechange = (e) => {
         if (req.readyState == 4 && req.status == 200) {
@@ -176,7 +176,7 @@ function loadCourseAssignments(courseID) {
 
 function loadRecentAssignments() {
     let req = new XMLHttpRequest();
-    let userURL = "http://alloy-backend.herokuapp.com/api/user/" + googleID + "/";
+    let userURL = "https://alloy-backend.herokuapp.com/api/user/" + googleID + "/";
     req.open("GET", userURL, true);
     req.onreadystatechange = (e) => {
         if (req.readyState == 4 && req.status == 200) {
@@ -195,7 +195,7 @@ function getRecentAssignments(user) {
         var assignmentButton = document.createElement("button");
         assignmentButton.type = "button";
         assignmentButton.addEventListener("click", () => {
-            let courseURL = "http://alloy-backend.herokuapp.com/api/course/" + assignment.course_id + "/";
+            let courseURL = "https://alloy-backend.herokuapp.com/api/course/" + assignment.course_id + "/";
             let req = new XMLHttpRequest();
             req.open("GET", courseURL, true);
             req.onreadystatechange = (e) => {
@@ -235,7 +235,7 @@ function openMessages(courseID, assignmentID) {
         })
     }
     let req = new XMLHttpRequest();
-    let messagesURL = "http://alloy-backend.herokuapp.com/api/course/" + courseID + "/assignment/" + assignmentID + "/";
+    let messagesURL = "https://alloy-backend.herokuapp.com/api/course/" + courseID + "/assignment/" + assignmentID + "/";
     req.open("GET", messagesURL, true);
     req.onreadystatechange = (e) => {
         if (req.readyState == 4 && req.status == 200) {
@@ -376,7 +376,7 @@ function hideModal() {
 function fetchCourses() {
     if (!courses) {
         let req = new XMLHttpRequest();
-        let classesURL = "http://alloy-backend.herokuapp.com/api/courses/";
+        let classesURL = "https://alloy-backend.herokuapp.com/api/courses/";
         var classes;
         req.open("GET", classesURL, true);
         req.onreadystatechange = (e) => {
@@ -425,7 +425,7 @@ function filter() {
 
 function addAssignment(courseID, assignmentName) {
     let req = new XMLHttpRequest();
-    let url = `http://alloy-backend.herokuapp.com/api/course/${courseID}/assignment/`;
+    let url = `https://alloy-backend.herokuapp.com/api/course/${courseID}/assignment/`;
     req.open("POST", url, true);
     req.setRequestHeader("Content-Type", "application/json");
     req.onreadystatechange = (e) => {
@@ -460,7 +460,7 @@ function addAssignment(courseID, assignmentName) {
                 hideModal();
 
                 let assignmentReq = new XMLHttpRequest();
-                let url = `http://alloy-backend.herokuapp.com/api/user_assignment/`;
+                let url = `https://alloy-backend.herokuapp.com/api/user_assignment/`;
                 assignmentReq.open("POST", url, true);
                 assignmentReq.setRequestHeader("Content-Type", "application/json");
                 assignmentReq.onreadystatechange = (e) => {
@@ -491,7 +491,7 @@ function addAssignment(courseID, assignmentName) {
 
 function addClass(course) {
     let req = new XMLHttpRequest();
-    let url = `http://alloy-backend.herokuapp.com/api/user_course/`;
+    let url = `https://alloy-backend.herokuapp.com/api/user_course/`;
     req.open("POST", url, true);
     req.setRequestHeader("Content-Type", "application/json");
     req.onreadystatechange = (e) => {

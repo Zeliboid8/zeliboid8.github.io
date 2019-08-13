@@ -1,5 +1,5 @@
 // Setting up sockets with socket.io
-const socket = io.connect('http://alloy-backend.herokuapp.com');
+const socket = io.connect('https://alloy-backend.herokuapp.com');
 function registerHandler() {
     socket.on('message', (data) => {
         addMessages(data)
