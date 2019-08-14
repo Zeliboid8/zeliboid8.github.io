@@ -124,12 +124,10 @@ function getRecentCourses(user) {
             joinCourse(course.course_id, name, () => {
                 console.log("Successfully joined course.");
             })
-            courseButton.classList.add("selected")
             Array.from(courseButton.parentElement.children).forEach((child) => {
-                if (child != courseButton) {
-                    child.classList.remove("selected");
-                }
+                child.classList.remove("selected");
             })
+            courseButton.classList.add("selected")
             loadCourseAssignments(course.course_id)
         });
         sidebarExtension.appendChild(courseButton);
@@ -496,12 +494,10 @@ function addClass(course) {
                     joinCourse(course.course_id, name, () => {
                         console.log("Successfully joined course.");
                     })
-                    courseButton.classList.add("selected");
                     Array.from(courseButton.parentElement.children).forEach((child) => {
-                        if (child != courseButton) {
-                            child.classList.remove("selected");
-                        }
+                        child.classList.remove("selected");
                     })
+                    courseButton.classList.add("selected");
                     loadCourseAssignments(course.course_id)
                 });
                 sidebarExtension.insertBefore(courseButton, sidebarExtension.lastElementChild)
