@@ -267,7 +267,7 @@ function closeMessages() {
         leaveCourse(displayedCourse.course_id, name, () => {
             displayedCourse = null;
             console.log("Left course successfully.")
-        },
+        })
     }
     return null;
 }
