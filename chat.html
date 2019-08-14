@@ -28,16 +28,16 @@
                     client_id: '346925839515-g5rho0muuob69h91ivpeh6nrvho870ii.apps.googleusercontent.com'
                 }).then(function () {
                     auth2 = gapi.auth2.getAuthInstance();
-                    let profile = auth2.currentUser.get().getBasicProfile()
-                    googleID = profile.getId();
-                    googleName = profile.getName();
-                    googlePhoto = profile.getImageUrl();
-                    name = googleName;
-                    photoLink = googlePhoto;
                     if (!auth2.isSignedIn.get() || auth2.currentUser.get() == undefined || getSessionToken() == null || getUpdateToken() == null) {
                         document.location.href = `/login.html`;
                     }
                     else {
+                        let profile = auth2.currentUser.get().getBasicProfile()
+                        googleID = profile.getId();
+                        googleName = profile.getName();
+                        googlePhoto = profile.getImageUrl();
+                        name = googleName;
+                        photoLink = googlePhoto;
                         openCourses();    
                     }
                 });
