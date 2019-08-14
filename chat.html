@@ -34,7 +34,7 @@
                     googlePhoto = profile.getImageUrl();
                     name = googleName;
                     photoLink = googlePhoto;
-                    if (!auth2.isSignedIn.get() || getSessionToken() == null || getUpdateToken() == null) {
+                    if (!auth2.isSignedIn.get() || auth2.currentUser.get() == undefined || getSessionToken() == null || getUpdateToken() == null) {
                         document.location.href = `/login.html`;
                     }
                     else {
