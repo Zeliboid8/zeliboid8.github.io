@@ -117,7 +117,7 @@ function getRecentCourses(user) {
         courseButton.addEventListener("click", () => {
             if (displayedCourse) {
                 leaveCourse(displayedCourse.course_id, name, () => {
-                    console.log(`Successfully left course ${displayedCourse.name}`);
+                    console.log(`Successfully left previous course.`);
                 });
             }
             displayedCourse = course;
@@ -489,7 +489,7 @@ function addClass(course) {
                 courseButton.addEventListener("click", () => {
                     if (displayedCourse) {
                         leaveCourse(displayedCourse.course_id, name, () => {
-                            console.log(`Successfully left course ${displayedCourse.name}`);
+                            console.log(`Successfully left previous course.`);
                         });
                     }
                     displayedCourse = course;
@@ -497,6 +497,11 @@ function addClass(course) {
                         console.log("Successfully joined course.");
                     })
                     courseButton.classList.add("selected");
+                    Array.from(courseButton.parentElement.children).forEach((child) => {
+                        if (child != courseButton) {
+                            child.classList.remove("selected");
+                        }
+                    })
                     loadCourseAssignments(course.course_id)
                 });
                 sidebarExtension.insertBefore(courseButton, sidebarExtension.lastElementChild)

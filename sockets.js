@@ -5,7 +5,7 @@ function registerHandler() {
         addMessages(data)
         scrollToBottom();
     });
-    socketet.on('new_assignment', (data) => {
+    socket.on('new_assignment', (data) => {
         addAssignmentToSidebar(data);
     })
 }
