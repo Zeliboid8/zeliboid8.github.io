@@ -40,6 +40,7 @@ function addMessages(data) {
             newMessage.className = 'speech-bubble';
             let profilePhoto = document.createElement("img");
             profilePhoto.src = message_data.photo_link;
+            profilePhoto.title = message_data.name;
             profilePhoto.className = "profile-photo";
             row.appendChild(profilePhoto);
         }
@@ -114,7 +115,15 @@ function getRecentCourses(user) {
         courseButton.type = "button";
         courseButton.innerHTML = courseButtonHTML;
         courseButton.addEventListener("click", () => {
+            if (displayedCourse) {
+                leaveCourse(displayedCourse.course_id, name, () => {
+                    console.log(`Successfully left course ${displayedCourse.name}`);
+                });
+            }
             displayedCourse = course;
+            joinCourse(course.course_id, name, () => {
+                console.log("Successfully joined course.");
+            })
             courseButton.classList.add("selected")
             Array.from(courseButton.parentElement.children).forEach((child) => {
                 if (child != courseButton) {
@@ -217,10 +226,10 @@ function getRecentAssignments(user) {
 
 function openMessages(courseID, assignmentID) {
     if (inRoom) {
-        leave(window.assignmentID, window.courseID, googleID, name, () => {
+        leaveAssignment(window.assignmentID, window.courseID, googleID, name, () => {
                 inRoom = false;
                 console.log("Left room successfully.")
-                join(assignmentID, courseID, googleID, name, () => {
+                joinAssignment(assignmentID, courseID, googleID, name, () => {
                     window.assignmentID = assignmentID;
                     window.courseID = courseID;
                     inRoom = true;
@@ -229,7 +238,7 @@ function openMessages(courseID, assignmentID) {
         });
     }
     else {
-        join(assignmentID, courseID, googleID, name, () => {
+        joinAssignment(assignmentID, courseID, googleID, name, () => {
             inRoom = true;
             console.log("Joined room successfully.")
         })
@@ -249,10 +258,16 @@ function openMessages(courseID, assignmentID) {
 
 function closeMessages() {
     if (inRoom) {
-        leave(assignmentID, courseID, googleID, name, () => {
+        leaveAssignment(assignmentID, courseID, googleID, name, () => {
             inRoom = false;
-            console.log("Left room successfully.")
+            console.log("Left assignment successfully.")
         })
+    }
+    if (displayedCourse) {
+        leaveCourse(displayedCourse.course_id, name, () => {
+            displayedCourse = null;
+            console.log("Left course successfully.")
+        },
     }
     return null;
 }
@@ -391,8 +406,35 @@ function fetchCourses() {
 
 function submitModal() {
     if (document.getElementById("confirm-modal").className == "submit") {
-        addAssignment(displayedCourse.course_id, document.getElementById("modal-field").value.trim());
+        addAssignment(displayedCourse.course_id, document.getElementById("modal-field").value.trim(), googleID, (result) => {
+            hideModal();
+        });
     }
+}
+
+function addAssignmentToSidebar(data) {
+    var firstSidebarExtension = document.getElementsByClassName("sidebar-extension")[0];
+    Array.from(firstSidebarExtension.children).forEach((child) => {
+        if (child.classList.contains("selected")) {
+            let assignmentCount = child.firstElementChild.lastElementChild.lastElementChild.innerHTML;
+            let numAssignments = parseInt(assignmentCount.substring(0, assignmentCount.indexOf(" "))) + 1;
+            let newColor = getColor(numAssignments);
+            child.className = `${newColor} selected`
+            child.firstElementChild.lastElementChild.lastElementChild.innerHTML = `${numAssignments} Assignment${numAssignments == 1 ? "" : "s"}`;
+        }
+    });
+
+    var secondSidebarExtension = document.getElementsByClassName("sidebar-extension second")[0];
+    var assignmentButton = document.createElement("button");
+    assignmentButton.type = "button";
+    var innerText = document.createElement("span");
+    innerText.innerHTML = data.assignmentName;
+    assignmentButton.appendChild(innerText);
+    assignmentButton.addEventListener("click", () => {
+        setChatName(`${displayedCourse.subject} ${displayedCourse.number}`, displayedCourse.name, data.assignmentName);
+        openMessages(displayedCourse.course_id, data.assignmentID)
+    });
+    secondSidebarExtension.insertBefore(assignmentButton, secondSidebarExtension.lastElementChild)
 }
 
 function addClassRows(classes) {
@@ -423,72 +465,6 @@ function filter() {
     }
 }
 
-function addAssignment(courseID, assignmentName) {
-    let req = new XMLHttpRequest();
-    let url = `https://alloy-backend.herokuapp.com/api/course/${courseID}/assignment/`;
-    req.open("POST", url, true);
-    req.setRequestHeader("Content-Type", "application/json");
-    req.onreadystatechange = (e) => {
-        if (req.readyState == 4) {
-            if (req.status == 201) {
-                console.log("Assignment successfully added.");
-                let data = JSON.parse(req.responseText)
-                let assignmentID = data.assignment_id;
-
-                var firstSidebarExtension = document.getElementsByClassName("sidebar-extension")[0];
-                Array.from(firstSidebarExtension.children).forEach((child) => {
-                    if (child.classList.contains("selected")) {
-                        let assignmentCount = child.firstElementChild.lastElementChild.lastElementChild.innerHTML;
-                        let numAssignments = parseInt(assignmentCount.substring(0, assignmentCount.indexOf(" "))) + 1;
-                        let newColor = getColor(numAssignments);
-                        child.className = `${newColor} selected`
-                        child.firstElementChild.lastElementChild.lastElementChild.innerHTML = `${numAssignments} Assignment${numAssignments == 1 ? "" : "s"}`;
-                    }
-                });
-
-                var secondSidebarExtension = document.getElementsByClassName("sidebar-extension second")[0];
-                var assignmentButton = document.createElement("button");
-                assignmentButton.type = "button";
-                var innerText = document.createElement("span");
-                innerText.innerHTML = assignmentName;
-                assignmentButton.appendChild(innerText);
-                assignmentButton.addEventListener("click", () => {
-                    setChatName(`${displayedCourse.subject} ${displayedCourse.number}`, displayedCourse.name, assignmentName);
-                    openMessages(courseID, assignmentID)
-                });
-                secondSidebarExtension.insertBefore(assignmentButton, secondSidebarExtension.lastElementChild)
-                hideModal();
-
-                let assignmentReq = new XMLHttpRequest();
-                let url = `https://alloy-backend.herokuapp.com/api/user_assignment/`;
-                assignmentReq.open("POST", url, true);
-                assignmentReq.setRequestHeader("Content-Type", "application/json");
-                assignmentReq.onreadystatechange = (e) => {
-                    if (assignmentReq.readyState == 4) {
-                        if (assignmentReq.status == 201) {
-                            console.log("Assignment successfully linked to user.")
-                        }
-                        else if (req.status == 200) {
-                            console.log("Assignment already linked to user!")
-                        }
-                    }
-                }
-                let assignmentParams = JSON.stringify({
-                    "action": "add",
-                    "google_id": googleID,
-                    "assignment_id": assignmentID
-                });
-                assignmentReq.send(assignmentParams);
-            }
-        }
-    }
-    let params = JSON.stringify({
-        "google_id": googleID,
-        "name": assignmentName
-    });
-    req.send(params);
-}
-
 function addClass(course) {
     let req = new XMLHttpRequest();
     let url = `https://alloy-backend.herokuapp.com/api/user_course/`;
@@ -511,7 +487,15 @@ function addClass(course) {
                 courseButton.type = "button";
                 courseButton.innerHTML = courseButtonHTML;
                 courseButton.addEventListener("click", () => {
+                    if (displayedCourse) {
+                        leaveCourse(displayedCourse.course_id, name, () => {
+                            console.log(`Successfully left course ${displayedCourse.name}`);
+                        });
+                    }
                     displayedCourse = course;
+                    joinCourse(course.course_id, name, () => {
+                        console.log("Successfully joined course.");
+                    })
                     courseButton.classList.add("selected");
                     loadCourseAssignments(course.course_id)
                 });

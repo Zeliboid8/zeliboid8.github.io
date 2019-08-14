@@ -357,7 +357,7 @@ button:hover {
 #main #group-header span#class-name {
     font-weight: 400;
     float: left;
-    max-width: 50%;
+    max-width: 60%;
 }
 #main #group-header span#class-name b {
     font-weight: 600;
@@ -365,7 +365,7 @@ button:hover {
 
 #main #group-header span#group-name {
     float: right;
-    max-width: 50%;
+    max-width: 40%;
 }
 
 #main #message-holder {
