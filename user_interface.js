@@ -501,8 +501,6 @@ function addClass(course) {
                     loadCourseAssignments(course.course_id)
                 });
                 sidebarExtension.insertBefore(courseButton, sidebarExtension.lastElementChild)
-
-
                 hideModal();
             }
             else if (req.status == 200) {
