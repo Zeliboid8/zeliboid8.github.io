@@ -1,40 +1,54 @@
 // Setting up sockets with socket.io
 const socket = io.connect('https://alloy-backend.herokuapp.com');
-function registerHandler() {
+
+socket.on('error', function (err) {
+    console.log('received socket error:');
+    console.log(err);
+})
+
+function registerMessageHandler() {
     socket.on('message', (data) => {
-        addMessages(data)
+        addMessages(data);
         scrollToBottom();
     });
+    
+}
+
+function unregisterMessageHandler() {
+    socket.off('message');
+}
+
+function registerAssignmentHandler() {
     socket.on('new_assignment', (data) => {
         addAssignmentToSidebar(data);
     })
 }
-function unregisterHandler() {
-    socket.off('message')
+
+function unregisterAssignmentHandler() {
+    socket.off('new_assignment');
 }
-socket.on('error', function (err) {
-    console.log('received socket error:')
-    console.log(err)
-})
 
 function joinCourse(courseID, name, callback) {
     socket.emit('join_course', {courseID, name}, callback);
+    registerAssignmentHandler();
 }
 
 function leaveCourse(courseID, name, callback) {
     socket.emit('leave_course', {courseID, name}, callback);
+    unregisterAssignmentHandler();
 }
 
 function joinAssignment(assignmentID, courseID, googleID, name, callback) {
     window.assignmentID = assignmentID;
     window.courseID = courseID;
     socket.emit('join_assignment', {assignmentID, courseID, googleID, name}, callback)
-    registerHandler();
+    registerMessageHandler();
 }
 function leaveAssignment(assignmentID, courseID, googleID, name, callback) {
     socket.emit('leave_assignment', {assignmentID, courseID, googleID, name}, callback)
-    unregisterHandler();
+    unregisterMessageHandler();
 }
+
 function messageCourse(assignmentID, courseID, googleID, name, photoLink, sessionToken, time, message, callback) {
     socket.emit('message', {assignmentID, courseID, googleID, name, photoLink, sessionToken, time, message}, callback)
 }
