@@ -1,6 +1,6 @@
 // Setting up sockets with socket.io
 sockets = function() {
-    const socket;
+    let socket;
 
     function init() {
         socket = io.connect('https://alloy-backend.herokuapp.com', {secure: true, query: `googleID=${googleID}, sessionToken=${getSessionToken()}`});
