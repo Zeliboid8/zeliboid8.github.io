@@ -4,8 +4,7 @@ sockets = function() {
 
     function init() {
         socket = io.connect('https://alloy-backend.herokuapp.com', {secure: true, query: `googleID=${googleID}&sessionToken=${getSessionToken()}`});
-        socket.on('connect_error', (err) => {
-            console.log(err);
+        socket.on('error', function (err) {
             if (err == "Invalid session token") {
                 console.log("Updating session token.");
                 io.connect('https://alloy-backend.herokuapp.com', {secure: true, query: `googleID=${googleID}&sessionToken=${getSessionToken()}&updateToken=${getUpdateToken()}`});
@@ -14,10 +13,9 @@ sockets = function() {
                 console.log("Invalid update token. Redirecting to sign in page.");
                 document.location.href = "/login.html"
             }
-        })
-        socket.on('error', function (err) {
-            console.log('received socket error:');
-            console.log(err);
+            else {
+                console.log("Socket error: ", err);
+            }
         })
         socket.on('update_session_token', (updateFunction) => { // Session token needs updating
             console.log("Updating session token.");
