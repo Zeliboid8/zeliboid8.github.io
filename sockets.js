@@ -6,6 +6,14 @@ sockets = function() {
         socket = io.connect('https://alloy-backend.herokuapp.com', {secure: true, query: `googleID=${googleID}&sessionToken=${getSessionToken()}`});
         socket.on('connect_error', (err) => {
             console.log(err);
+            if (err == "Invalid session token") {
+                console.log("Updating session token.");
+                io.connect('https://alloy-backend.herokuapp.com', {secure: true, query: `googleID=${googleID}&sessionToken=${getSessionToken()}&updateToken=${getUpdateToken()}`});
+            }
+            else if (err == "Invalid update token") {
+                console.log("Invalid update token. Redirecting to sign in page.");
+                document.location.href = "/login.html"
+            }
         })
         socket.on('error', function (err) {
             console.log('received socket error:');
