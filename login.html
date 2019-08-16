@@ -39,9 +39,7 @@
                             console.log('Name: ' + profile.getName());
                             console.log('Image URL: ' + profile.getImageUrl());
                             console.log('Email: ' + profile.getEmail());
-                            
-                            response = JSON.parse(req.responseText);
-                            console.log(response);
+                            let response = JSON.parse(req.responseText);
                             setSessionToken(response.session_token)
                             setUpdateToken(response.update_token)
 

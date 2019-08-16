@@ -1,5 +1,5 @@
 // Setting up sockets with socket.io
-const socket = io.connect('https://alloy-backend.herokuapp.com');
+const socket = io.connect('https://alloy-backend.herokuapp.com', {secure: true});
 
 socket.on('error', function (err) {
     console.log('received socket error:');
@@ -11,7 +11,6 @@ function registerMessageHandler() {
         addMessages(data);
         scrollToBottom();
     });
-    
 }
 
 function unregisterMessageHandler() {
