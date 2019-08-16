@@ -12,7 +12,7 @@ sockets = function() {
                 console.log("Updating session token.");
                 init(`googleID=${googleID}&updateToken=${getUpdateToken()}`);
             }
-            else if (err == "Session token updated; retry") {
+            else if (err.data) {
                 console.log("Updated session token.");
                 console.log(err.session_token);
                 console.log(err.data);
