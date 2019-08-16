@@ -4,6 +4,9 @@ sockets = function() {
 
     function init() {
         socket = io.connect('https://alloy-backend.herokuapp.com', {secure: true, query: `googleID=${googleID}&sessionToken=${getSessionToken()}`});
+        socket.on('connect_error', (err) => {
+            console.log(err);
+        })
         socket.on('error', function (err) {
             console.log('received socket error:');
             console.log(err);
