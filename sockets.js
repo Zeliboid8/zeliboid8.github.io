@@ -17,13 +17,10 @@ sockets = function() {
                 console.log("Socket error: ", err);
             }
         })
-        socket.on('update_session_token', (updateFunction) => { // Session token needs updating
-            console.log("Updating session token.");
-            console.log(updateFunction);
-            updateFunction(getUpdateToken(), (data) => {        // Pass update token into update function to run at the server
-                setSessionToken(data.session_token);            // Set new session token given by server as a cookie
-            });
-        });
+        socket.on('new_token', (data) => {
+            console.log("New token received: ", data.session_token);
+            setSessionToken(data.session_token);
+        })
     }
 
     function registerMessageHandler() {
