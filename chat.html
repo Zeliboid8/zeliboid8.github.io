@@ -38,7 +38,7 @@
                         googlePhoto = profile.getImageUrl();
                         name = googleName;
                         photoLink = googlePhoto;
-                        sockets.init();
+                        sockets.init(`googleID=${googleID}&sessionToken=${getSessionToken()}`);
                         loadRecentCourses();    
                     }
                 });
