@@ -6,6 +6,13 @@ socket.on('error', function (err) {
     console.log(err);
 })
 
+
+socket.on('update_session_token', (updateFunction) => { // Session token needs updating
+    updateFunction(getUpdateToken(), (data) => {        // Pass update token into update function to run at the server
+        setSessionToken(data.session_token);            // Set new session token given by server as a cookie
+    });
+});
+
 function registerMessageHandler() {
     socket.on('message', (data) => {
         addMessages(data);

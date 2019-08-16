@@ -42,7 +42,6 @@
                             let response = JSON.parse(req.responseText);
                             setSessionToken(response.session_token)
                             setUpdateToken(response.update_token)
-
                             document.location.href = `/chat.html`;
                         }
                         else if (req.readyState == 4 && req.status == 400) {
