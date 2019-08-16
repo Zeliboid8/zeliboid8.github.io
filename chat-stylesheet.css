@@ -280,7 +280,7 @@ button:hover {
 
 .sidebar-extension.second {
     height: 100%;
-    width: 15%;
+    width: 0%;
     position: fixed;
     z-index: 2;
     top: 0;
@@ -322,7 +322,7 @@ button:hover {
 
 #main {
     position: fixed;
-    left: 45%;
+    left: 30%;
     top: 0px;
     bottom: 0px;
     right: 0px;

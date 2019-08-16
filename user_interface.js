@@ -116,12 +116,12 @@ function getRecentCourses(user) {
         courseButton.innerHTML = courseButtonHTML;
         courseButton.addEventListener("click", () => {
             if (displayedCourse) {
-                leaveCourse(displayedCourse.course_id, name, () => {
+                sockets.leaveCourse(displayedCourse.course_id, name, () => {
                     console.log(`Successfully left previous course.`);
                 });
             }
             displayedCourse = course;
-            joinCourse(course.course_id, name, () => {
+            sockets.joinCourse(course.course_id, name, () => {
                 console.log("Successfully joined course.");
             })
             Array.from(courseButton.parentElement.children).forEach((child) => {
@@ -224,10 +224,10 @@ function getRecentAssignments(user) {
 
 function openMessages(courseID, assignmentID) {
     if (inRoom) {
-        leaveAssignment(window.assignmentID, window.courseID, googleID, name, () => {
+        sockets.leaveAssignment(window.assignmentID, window.courseID, googleID, name, () => {
                 inRoom = false;
                 console.log("Left room successfully.")
-                joinAssignment(assignmentID, courseID, googleID, name, () => {
+                sockets.joinAssignment(assignmentID, courseID, googleID, name, () => {
                     window.assignmentID = assignmentID;
                     window.courseID = courseID;
                     inRoom = true;
@@ -236,7 +236,7 @@ function openMessages(courseID, assignmentID) {
         });
     }
     else {
-        joinAssignment(assignmentID, courseID, googleID, name, () => {
+        sockets.joinAssignment(assignmentID, courseID, googleID, name, () => {
             inRoom = true;
             console.log("Joined room successfully.")
         })
@@ -256,13 +256,13 @@ function openMessages(courseID, assignmentID) {
 
 function closeMessages() {
     if (inRoom) {
-        leaveAssignment(assignmentID, courseID, googleID, name, () => {
+        sockets.leaveAssignment(assignmentID, courseID, googleID, name, () => {
             inRoom = false;
             console.log("Left assignment successfully.")
         })
     }
     if (displayedCourse) {
-        leaveCourse(displayedCourse.course_id, name, () => {
+        sockets.leaveCourse(displayedCourse.course_id, name, () => {
             displayedCourse = null;
             console.log("Left course successfully.")
         })
@@ -277,7 +277,7 @@ function sendMessage() {
     if (messageField.value != '') {
         messageField.value = '';
         let sessionToken = getSessionToken();
-        messageCourse(assignmentID, courseID, googleID, name, photoLink, sessionToken, time, message, (success) => 
+        sockets.messageCourse(assignmentID, courseID, googleID, name, photoLink, sessionToken, time, message, (success) => 
             {
                 if (success) {
                     console.log("Message sent successfully.");
@@ -291,7 +291,6 @@ function sendMessage() {
 }
 
 function closeSidebar() {
-    document.getElementsByClassName("sidebar")[0].style.borderRight = "1px solid rgba(0, 0, 0, 0.05)";
     document.getElementsByClassName("sidebar-extension second")[0].style.width = "0";
     document.getElementsByClassName("sidebar-extension")[0].style.width = "0";
     document.getElementsByClassName("sidebar-extension")[0].style.transitionDelay = "0.25s"
@@ -314,7 +313,6 @@ function closeSidebar() {
 function openCourses() {
     closeSidebar();
     loadRecentCourses();
-    document.getElementsByClassName("sidebar")[0].style.borderRight = "none";
     document.getElementsByClassName("sidebar-extension")[0].style.width = "20%";
     document.getElementsByClassName("sidebar-extension")[0].style.transitionDelay = "0s"
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension";
@@ -341,7 +339,6 @@ function openCourseAssignments() {
 function openAssignments() {
     closeSidebar();
     loadRecentAssignments();
-    document.getElementsByClassName("sidebar")[0].style.borderRight = "none";
     document.getElementsByClassName("sidebar-extension")[0].style.width = "20%";
     document.getElementsByClassName("sidebar-extension")[0].style.transitionDelay = "0s"
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension compact";
@@ -404,7 +401,7 @@ function fetchCourses() {
 
 function submitModal() {
     if (document.getElementById("confirm-modal").className == "submit") {
-        addAssignment(displayedCourse.course_id, document.getElementById("modal-field").value.trim(), googleID, (result) => {
+        sockets.addAssignment(displayedCourse.course_id, document.getElementById("modal-field").value.trim(), googleID, (result) => {
             hideModal();
         });
     }
@@ -486,12 +483,12 @@ function addClass(course) {
                 courseButton.innerHTML = courseButtonHTML;
                 courseButton.addEventListener("click", () => {
                     if (displayedCourse) {
-                        leaveCourse(displayedCourse.course_id, name, () => {
+                        sockets.leaveCourse(displayedCourse.course_id, name, () => {
                             console.log(`Successfully left previous course.`);
                         });
                     }
                     displayedCourse = course;
-                    joinCourse(course.course_id, name, () => {
+                    sockets.joinCourse(course.course_id, name, () => {
                         console.log("Successfully joined course.");
                     })
                     Array.from(courseButton.parentElement.children).forEach((child) => {

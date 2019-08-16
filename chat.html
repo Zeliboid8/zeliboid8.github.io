@@ -38,7 +38,8 @@
                         googlePhoto = profile.getImageUrl();
                         name = googleName;
                         photoLink = googlePhoto;
-                        openCourses();    
+                        sockets.init();
+                        loadRecentCourses();    
                     }
                 });
             });
