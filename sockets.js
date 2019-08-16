@@ -3,12 +3,14 @@ sockets = function() {
     let socket;
 
     function init() {
-        socket = io.connect('https://alloy-backend.herokuapp.com', {secure: true, query: `googleID=${googleID}, sessionToken=${getSessionToken()}`});
+        socket = io.connect('https://alloy-backend.herokuapp.com', {secure: true, query: `googleID=${googleID}&sessionToken=${getSessionToken()}`});
         socket.on('error', function (err) {
             console.log('received socket error:');
             console.log(err);
         })
         socket.on('update_session_token', (updateFunction) => { // Session token needs updating
+            console.log("Updating session token.");
+            console.log(updateFunction);
             updateFunction(getUpdateToken(), (data) => {        // Pass update token into update function to run at the server
                 setSessionToken(data.session_token);            // Set new session token given by server as a cookie
             });
