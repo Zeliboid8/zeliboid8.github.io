@@ -205,6 +205,17 @@ button:hover {
     padding-right: 10px;
 }
 
+@media only screen and (max-width: 1000px) {
+    .sidebar-extension button div.center-container-left {
+        display: none;
+    }
+
+    .sidebar-extension button div.center-container-right { 
+        width: 100%;
+        padding: 10px 10px 10px 10px;
+    }
+}
+
 .sidebar-extension button .top { 
     display: block;
     color: rgb(114,114,114);
@@ -257,7 +268,7 @@ button:hover {
 }
 
 .sidebar-extension.compact button {
-    min-height: 60px;
+    min-height: 80px;
     padding: 20px 20px;
     border: none;
     text-align: left;
@@ -267,7 +278,8 @@ button:hover {
 }
 
 .sidebar-extension.compact button span {
-    font-weight: bold;
+    /* font-weight: bold; */
+    font-size: 14px;
 }
 
 .sidebar-extension.compact .special span {
@@ -410,38 +422,49 @@ button:hover {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-#main input#message-field {
-    box-sizing: border-box;
-    float: left;
+#main #message-field {
     left: 0px;
     bottom: 0px;
-    border: none;
-    width: 95%;
+    position: relative;
+    width: auto;
+    overflow: hidden;
     height: 50px;
+}
+
+#main #message-field input {
+    box-sizing: border-box;
+    border: none;
+    width: 100%;
     padding-left: 10px;
     background-color: rgba(0, 0, 0, 0);
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
+    height: 100%;
 }
 
-#main input#send {
-    box-sizing: border-box;
+#main #message-send {
     float: right;
     right: 0px;
     bottom: 0px;
-    width: 5%;
+    position: relative;
+    width: 40px;
+    height: 50px;
+    padding-right: 5px;
+}
+
+#main #message-send input {
+    box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
     color: #008EBB;
     padding: 0px 5px;
-    height: 50px;
     font-weight: bolder;
-    vertical-align: center;
     background-color: rgba(0, 0, 0, 0);
     border: none;
+    height: 100%;
 }
 
-#main input#send:hover {
+#main #message-send input:hover {
     cursor: pointer;
 }
 

@@ -148,8 +148,9 @@ function loadCourseAssignments(courseID) {
                     setChatName(`${displayedCourse.subject} ${displayedCourse.number}`, displayedCourse.name, assignment.name);
                     openMessages(assignment.course_id, assignment.assignment_id);
                 });
-                var innerText = document.createElement("span");
-                innerText.innerHTML = assignment.name;
+                var innerText = document.createElement("div");
+                innerText.innerHTML = `<span class="top">${assignment.name}</span>
+                                        <span class="bottom">${assignment.num_messages} Message${assignment.num_messages == 1 ? "" : "s"}</span>`;
                 assignmentButton.appendChild(innerText);
                 sidebarExtension2.appendChild(assignmentButton);
             });
@@ -203,8 +204,9 @@ function getRecentAssignments(user) {
             req.send();
            
         });
-        var innerText = document.createElement("span");
-        innerText.innerHTML = assignment.name;
+        var innerText = document.createElement("div");
+        innerText.innerHTML = `<span class="top">${assignment.name}</span>
+                                <span class="bottom">${assignment.num_messages} Message${assignment.num_messages == 1 ? "" : "s"}</span>`;
         assignmentButton.appendChild(innerText);
         sidebarExtension.appendChild(assignmentButton);
     });
@@ -259,7 +261,7 @@ function closeMessages() {
 }
 
 function sendMessage() {
-    var messageField = document.getElementById("message-field");
+    var messageField = document.getElementById("message-field").firstElementChild;
     var message = messageField.value;
     var time = new Date().toISOString().slice(0, 19)
     if (messageField.value != '') {
@@ -410,8 +412,9 @@ function addAssignmentToSidebar(data) {
     var secondSidebarExtension = document.getElementsByClassName("sidebar-extension second")[0];
     var assignmentButton = document.createElement("button");
     assignmentButton.type = "button";
-    var innerText = document.createElement("span");
-    innerText.innerHTML = data.assignmentName;
+    var innerText = document.createElement("div");
+        innerText.innerHTML = `<span class="top">${data.assignmentName}</span>
+                                <span class="bottom">0 Messages</span>`;
     assignmentButton.appendChild(innerText);
     assignmentButton.addEventListener("click", () => {
         setChatName(`${displayedCourse.subject} ${displayedCourse.number}`, displayedCourse.name, data.assignmentName);
