@@ -4,10 +4,14 @@
     <link rel="stylesheet" href="browse-stylesheet.css">
     <meta name="google-signin-client_id" content="346925839515-g5rho0muuob69h91ivpeh6nrvho870ii.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/api:client.js"></script>
+    <script>
+        const devServerURL = "http://localhost:8000";
+        const prodServerURL = "https://alloy-backend.herokuapp.com";
+        let serverURL = document.location.href.includes("localhost") ? devServerURL : prodServerURL;
+    </script>
     <script type="text/javascript" src="cookies.js"></script>
     <script type="text/javascript" src="browse_requests.js"></script>
     <script type="text/javascript" src="browse_user_interface.js"></script>
-
     <title>Alloy — Browse Classes</title>
 </head>
 <body>

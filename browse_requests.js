@@ -18,7 +18,7 @@ gapi.load('auth2', function() {
 
 function fetchCourses() {
     const req = new XMLHttpRequest();
-    const classesURL = "https://alloy-backend.herokuapp.com/api/courses/";
+    const classesURL = `${serverURL}/api/courses/`;
     var classes;
     req.open("GET", classesURL, true);
     req.onreadystatechange = (e) => {
@@ -40,7 +40,7 @@ function fetchCourses() {
 
 function getUserInfo() {
     const req = new XMLHttpRequest();
-    const userURL = "https://alloy-backend.herokuapp.com/api/user/" + googleID + "/";
+    const userURL = `${serverURL}/api/user/${googleID}/`;
     req.open("GET", userURL, true);
     req.onreadystatechange = (e) => {
         if (req.readyState == 4 && req.status == 200) {
@@ -54,7 +54,7 @@ function getUserInfo() {
 
 function getCourseInfo(courseID, callback) {
     const req = new XMLHttpRequest();
-    const courseURL = `https://alloy-backend.herokuapp.com/api/course/${courseID}/`;
+    const courseURL = `${serverURL}/api/course/${courseID}/`;
     req.open("GET", courseURL, true);
     req.onreadystatechange = (e) => {
         if (req.readyState == 4 && req.status == 200) {

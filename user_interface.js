@@ -1,15 +1,3 @@
-displayedMessages = []
-inRoom = false;
-var googleID;
-var googleName;
-var name;
-var photoLink;
-var googlePhoto;
-var displayedCourse;  // The course ID of the assignments displayed in the sidebar;
-var courseID;       // The course ID of the user's current chat room;
-var assignmentID;
-var courses;
-
 function clearElements(ele) {
     while (ele.firstChild) {
         ele.removeChild(ele.firstChild);
@@ -75,7 +63,7 @@ function clearMessages() {
 
 function loadRecentCourses() {
     let req = new XMLHttpRequest();
-    let userURL = "https://alloy-backend.herokuapp.com/api/user/" + googleID + "/";
+    let userURL = `${serverURL}/api/user/${googleID}/`;
     req.open("GET", userURL, true);
     req.onreadystatechange = (e) => {
         if (req.readyState == 4 && req.status == 200) {
@@ -146,7 +134,7 @@ function getRecentCourses(user) {
 
 function loadCourseAssignments(courseID) {
     let req = new XMLHttpRequest();
-    let assignmentsURL = "https://alloy-backend.herokuapp.com/api/course/" + courseID + "/assignments/";
+    let assignmentsURL = `${serverURL}/api/course/${courseID}/assignments/`;
     req.open("GET", assignmentsURL, true);
     req.onreadystatechange = (e) => {
         if (req.readyState == 4 && req.status == 200) {
@@ -183,7 +171,7 @@ function loadCourseAssignments(courseID) {
 
 function loadRecentAssignments() {
     let req = new XMLHttpRequest();
-    let userURL = "https://alloy-backend.herokuapp.com/api/user/" + googleID + "/";
+    let userURL = `${serverURL}/api/user/${googleID}/`;
     req.open("GET", userURL, true);
     req.onreadystatechange = (e) => {
         if (req.readyState == 4 && req.status == 200) {
@@ -202,7 +190,7 @@ function getRecentAssignments(user) {
         var assignmentButton = document.createElement("button");
         assignmentButton.type = "button";
         assignmentButton.addEventListener("click", () => {
-            let courseURL = "https://alloy-backend.herokuapp.com/api/course/" + assignment.course_id + "/";
+            let courseURL = `${serverURL}/api/course/${assignment.course_id}/`;
             let req = new XMLHttpRequest();
             req.open("GET", courseURL, true);
             req.onreadystatechange = (e) => {
@@ -242,7 +230,7 @@ function openMessages(courseID, assignmentID) {
         })
     }
     let req = new XMLHttpRequest();
-    let messagesURL = "https://alloy-backend.herokuapp.com/api/course/" + courseID + "/assignment/" + assignmentID + "/";
+    let messagesURL = `${serverURL}/api/course/${courseID}/assignment/${assignmentID}/`;
     req.open("GET", messagesURL, true);
     req.onreadystatechange = (e) => {
         if (req.readyState == 4 && req.status == 200) {
@@ -386,7 +374,7 @@ function hideModal() {
 function fetchCourses() {
     if (!courses) {
         let req = new XMLHttpRequest();
-        let classesURL = "https://alloy-backend.herokuapp.com/api/courses/";
+        let classesURL = `${serverURL}/api/courses/`;
         var classes;
         req.open("GET", classesURL, true);
         req.onreadystatechange = (e) => {
@@ -462,7 +450,7 @@ function filter() {
 
 function addClass(course) {
     let req = new XMLHttpRequest();
-    let url = `https://alloy-backend.herokuapp.com/api/user_course/`;
+    let url = `${serverURL}/api/user_course/`;
     req.open("POST", url, true);
     req.setRequestHeader("Content-Type", "application/json");
     req.onreadystatechange = (e) => {

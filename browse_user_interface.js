@@ -44,7 +44,7 @@ function filter() {
 
 function addClass(button) {
     const req = new XMLHttpRequest();
-    const url = `https://alloy-backend.herokuapp.com/api/user_course/`;
+    const url = `${serverURL}/api/user_course/`;
     req.open("POST", url, true);
     req.setRequestHeader("Content-Type", "application/json");
     req.onreadystatechange = (e) => {
@@ -67,7 +67,7 @@ function addClass(button) {
 
 function removeClass(button) {
     const req = new XMLHttpRequest();
-    const url = `https://alloy-backend.herokuapp.com/api/user_course/`;
+    const url = `${serverURL}/api/user_course/`;
     req.open("POST", url, true);
     req.setRequestHeader("Content-Type", "application/json");
     req.onreadystatechange = (e) => {

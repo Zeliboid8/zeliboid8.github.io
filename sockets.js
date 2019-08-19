@@ -4,7 +4,7 @@ sockets = function() {
 
     function init(queryParams) {
         if (queryParams) {
-            socket = io.connect('https://alloy-backend.herokuapp.com', {secure: true, query: queryParams});
+            socket = io.connect(serverURL, {secure: true, query: queryParams});
         }
         
         socket.on('error', function (err) {

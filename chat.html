@@ -5,7 +5,12 @@
     <meta name="google-signin-client_id" content="346925839515-g5rho0muuob69h91ivpeh6nrvho870ii.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/api:client.js"></script>
 
-    <script src="https://alloy-backend.herokuapp.com/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="variables.js"></script>
+    <script>
+        let clientScript = document.createElement("script");
+        clientScript.src = `${serverURL}/socket.io/socket.io.js`;
+        document.head.append(clientScript);
+    </script>
     <script type="text/javascript" src="sockets.js"></script>
     <script type="text/javascript" src="user_interface.js"></script>
     <script type="text/javascript" src="cookies.js"></script>
