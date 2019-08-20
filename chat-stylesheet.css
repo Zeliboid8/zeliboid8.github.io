@@ -54,7 +54,7 @@ button:hover {
 .sidebar button.selected {
     background-color: rgba(0, 0, 0, 0.07);
     border-left: 3px solid rgb(226, 109, 1);
-    transition: 0.2s;
+    transition: border-width 0.2s, background-color 0.2s;
 }
 
 .sidebar-extension {
@@ -795,7 +795,6 @@ textarea:focus, input:focus {
         height: 50px;
         width: 50px;
         font-size: 0px;
-        transition: 0.2s;
     }
     
     .sidebar button#browse {
