@@ -106,22 +106,22 @@
         document.getElementById("browse").addEventListener("click", () => {
             document.location.href = "/browse.html"
         });
-        document.getElementById("courses").addEventListener("click", openCourses);
-        document.getElementById("groups").addEventListener("click", openAssignments);
+        document.getElementById("courses").addEventListener("click", () => {
+            openCourses();
+            document.getElementById("courses").className = "selected";
+            document.getElementById("groups").classList.remove("selected");
+        });
+        document.getElementById("groups").addEventListener("click", () => {
+            openAssignments();
+            document.getElementById("groups").className = "selected";
+            document.getElementById("courses").classList.remove("selected");
+        });
         document.getElementById("logout").addEventListener("click", signOut);
         document.getElementById("modal-field").addEventListener("keyup", () => {
             if (document.getElementById("confirm-modal").className == "search") {
                 filter();
             }
         })
-        document.getElementsByClassName("sidebar")[0].querySelectorAll("button").forEach((child) => {
-            child.addEventListener("click", () => {
-                Array.from(child.parentElement.children).forEach((sibling) => {
-                    sibling.classList.remove("selected");
-                })
-                child.className = "selected";
-            });
-        });
     </script>
 </body>
 </html>
