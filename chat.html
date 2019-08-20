@@ -114,6 +114,14 @@
                 filter();
             }
         })
+        document.getElementsByClassName("sidebar")[0].querySelectorAll("button").forEach((child) => {
+            child.addEventListener("click", () => {
+                Array.from(child.parentElement.children).forEach((sibling) => {
+                    sibling.classList.remove("selected");
+                })
+                child.className = "selected";
+            });
+        });
     </script>
 </body>
 </html>

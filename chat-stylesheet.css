@@ -51,6 +51,12 @@ button:hover {
     transition: color 0.3s;
 }
 
+.sidebar button.selected {
+    background-color: rgba(0, 0, 0, 0.07);
+    border-left: 3px solid rgb(226, 109, 1);
+    transition: 0.2s;
+}
+
 .sidebar-extension {
     height: 100%;
     width: 20%;
@@ -272,6 +278,7 @@ button:hover {
 
 .sidebar-extension.compact {
     background-color: rgb(240, 240, 240);
+    transition: none;
 }
 
 .sidebar-extension.compact button {
@@ -606,7 +613,7 @@ textarea:focus, input:focus {
 }
 
 .close {
-    margin: 12px 20px 6px 20px;
+    margin: 12px 20px 6px 0px;
     font-size: 24px;
     color: rgb(255, 255, 255);
     float: right;
@@ -788,22 +795,35 @@ textarea:focus, input:focus {
         height: 50px;
         width: 50px;
         font-size: 0px;
+        transition: 0.2s;
     }
     
     .sidebar button#browse {
         background-image: url(search.png);
     }
+    .sidebar button:hover#browse {
+        background-image: url(search-dark.png);
+    }
     
     .sidebar button#courses {
         background-image: url(course.png);
+    }
+    .sidebar button:hover#courses {
+        background-image: url(course-dark.png);
     }
     
     .sidebar button#groups {
         background-image: url(group.png);
     }
+    .sidebar button:hover#groups {
+        background-image: url(group-dark.png);
+    }
     
     .sidebar button#logout {
         background-image: url(signout.png);
+    }
+    .sidebar button:hover#logout {
+        background-image: url(signout-dark.png);
     }
 
     #incognito-button {
