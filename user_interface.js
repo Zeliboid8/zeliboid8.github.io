@@ -280,32 +280,9 @@ function sendMessage() {
     return false;
 }
 
-function closeSidebar() {
-    document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden";
-    document.getElementsByClassName("sidebar-extension")[0].querySelectorAll("button").forEach(
-        (child) => {
-            child.style.opacity = "0";
-            child.style.transition = "0.2s";
-        }
-    )
-    document.getElementsByClassName("sidebar-extension second")[0].querySelectorAll("button").forEach(
-        (child) => {
-            child.style.opacity = "0";
-            child.style.transition = "0.2s";
-        }
-    )
-    document.getElementById("main").className = "one-sidebar";
-}
-
 function openCourses() {
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension";
     document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden";
-    document.getElementsByClassName("sidebar-extension")[0].querySelectorAll("button").forEach(
-        (child) => {
-            child.style.opacity = "1";
-            child.style.transitionDelay = "0.2s";
-        }
-    )
     document.getElementById("main").className = "one-sidebar";
     loadRecentCourses();
 }
@@ -313,12 +290,6 @@ function openCourses() {
 function openCourseAssignments() {
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension";
     document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second compact"
-    document.getElementsByClassName("sidebar-extension second")[0].querySelectorAll("button").forEach(
-        (child) => {
-            child.style.opacity = "1";
-            child.style.transitionDelay = "0.2s";
-        }
-    )
     document.getElementById("main").className = "two-sidebars";
 }
 
@@ -328,12 +299,6 @@ function openAssignments() {
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension compact";
     document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden"
     document.getElementsByClassName("sidebar-extension second")[0].querySelectorAll("button").forEach(
-        (child) => {
-            child.style.opacity = "1";
-            child.style.transitionDelay = "0.2s";
-        }
-    )
-    document.getElementsByClassName("sidebar-extension")[0].querySelectorAll("button").forEach(
         (child) => {
             child.style.opacity = "1";
             child.style.transitionDelay = "0.2s";
