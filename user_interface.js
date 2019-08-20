@@ -281,9 +281,7 @@ function sendMessage() {
 }
 
 function closeSidebar() {
-    document.getElementsByClassName("sidebar-extension second")[0].style.width = "0";
-    document.getElementsByClassName("sidebar-extension")[0].style.width = "0";
-    document.getElementsByClassName("sidebar-extension")[0].style.transitionDelay = "0.25s"
+    document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden";
     document.getElementsByClassName("sidebar-extension")[0].querySelectorAll("button").forEach(
         (child) => {
             child.style.opacity = "0";
@@ -296,49 +294,52 @@ function closeSidebar() {
             child.style.transition = "0.2s";
         }
     )
-    // document.getElementById("main").style.transitionDelay = "0.5s";
-    document.getElementById("main").style.left = "10%";
+    document.getElementById("main").className = "one-sidebar";
 }
 
 function openCourses() {
-    closeSidebar();
-    loadRecentCourses();
-    document.getElementsByClassName("sidebar-extension")[0].style.width = "20%";
-    document.getElementsByClassName("sidebar-extension")[0].style.transitionDelay = "0s"
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension";
+    document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden";
     document.getElementsByClassName("sidebar-extension")[0].querySelectorAll("button").forEach(
         (child) => {
             child.style.opacity = "1";
             child.style.transitionDelay = "0.2s";
         }
     )
-    document.getElementById("main").style.left = "30%";
+    document.getElementById("main").className = "one-sidebar";
+    loadRecentCourses();
 }
 
 function openCourseAssignments() {
-    document.getElementsByClassName("sidebar-extension second")[0].style.width = "15%";
+    document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension";
+    document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second compact"
     document.getElementsByClassName("sidebar-extension second")[0].querySelectorAll("button").forEach(
         (child) => {
             child.style.opacity = "1";
             child.style.transitionDelay = "0.2s";
         }
     )
-    document.getElementById("main").style.left = "45%";
+    document.getElementById("main").className = "two-sidebars";
 }
 
 function openAssignments() {
-    closeSidebar();
     loadRecentAssignments();
-    document.getElementsByClassName("sidebar-extension")[0].style.width = "20%";
-    document.getElementsByClassName("sidebar-extension")[0].style.transitionDelay = "0s"
+
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension compact";
+    document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden"
+    document.getElementsByClassName("sidebar-extension second")[0].querySelectorAll("button").forEach(
+        (child) => {
+            child.style.opacity = "1";
+            child.style.transitionDelay = "0.2s";
+        }
+    )
     document.getElementsByClassName("sidebar-extension")[0].querySelectorAll("button").forEach(
         (child) => {
             child.style.opacity = "1";
             child.style.transitionDelay = "0.2s";
         }
     )
-    document.getElementById("main").style.left = "30%";
+    document.getElementById("main").className = "one-sidebar";
 }
 
 function toggleIncognito(button) {

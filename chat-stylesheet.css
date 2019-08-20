@@ -305,12 +305,16 @@ button:hover {
 
 .sidebar-extension.second {
     height: 100%;
-    width: 0%;
+    width: 15%;
     position: fixed;
     z-index: 2;
     top: 0;
     left: 30%;
     transition: 0.25s;
+}
+
+.sidebar-extension.second.hidden {
+    width: 0%;
 }
 
 .sidebar-extension.second.compact {
@@ -352,6 +356,14 @@ button:hover {
     bottom: 0px;
     right: 0px;
     transition: 0.25s
+}
+
+#main.one-sidebar {
+    left: 30%;
+}
+
+#main.two-sidebars {
+    left: 45%;
 }
 
 #main #group-header {
@@ -702,6 +714,10 @@ textarea:focus, input:focus {
     position: relative;
     top: 50%;
     transform: translateY(-30%);
+}
+
+.hidden {
+    width: 0px;
 }
 
 @media only screen and (max-width: 1300px) {
