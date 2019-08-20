@@ -281,10 +281,10 @@ function sendMessage() {
 }
 
 function openCourses() {
+    loadRecentCourses();
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension";
     document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden";
     document.getElementById("main").className = "one-sidebar";
-    loadRecentCourses();
 }
 
 function openCourseAssignments() {
@@ -295,7 +295,6 @@ function openCourseAssignments() {
 
 function openAssignments() {
     loadRecentAssignments();
-
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension compact";
     document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden"
     document.getElementsByClassName("sidebar-extension second")[0].querySelectorAll("button").forEach(
