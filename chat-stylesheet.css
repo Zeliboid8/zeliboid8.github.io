@@ -48,7 +48,7 @@ button:hover {
 
 .sidebar button:hover {
     color: gray;
-    transition: 0.3s;
+    transition: color 0.3s;
 }
 
 .sidebar-extension {
@@ -59,8 +59,9 @@ button:hover {
     top: 0;
     left: 10%;
     overflow-y: scroll;
+    overflow-x: hidden;
     padding: none;
-    transition: 0.25s;
+    /* transition: 0.25s; */
 }
 
 .sidebar-extension::-webkit-scrollbar {
@@ -76,12 +77,10 @@ button:hover {
 
 .sidebar-extension:hover::-webkit-scrollbar {
     visibility: visible;
-    transition: 0.5s;
 }
 
 .sidebar-extension:hover::-webkit-scrollbar-thumb {
     visibility: visible;
-    transition: 0.5s;
 }
 
 .sidebar-extension button {
@@ -205,27 +204,20 @@ button:hover {
     padding-right: 10px;
 }
 
-@media only screen and (max-width: 1000px) {
-    .sidebar-extension button div.center-container-left {
-        display: none;
-    }
-
-    .sidebar-extension button div.center-container-right { 
-        width: 100%;
-        padding: 10px 10px 10px 10px;
-    }
-}
-
 .sidebar-extension button .top { 
     display: block;
     color: rgb(114,114,114);
     font-size: 13px;
     font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .sidebar-extension button .middle {
     display: block;
     font-size: 18px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .sidebar-extension button.gray .middle {
@@ -248,6 +240,18 @@ button:hover {
     display: block;
     color: rgb(114,114,114);
     font-size: 13px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.sidebar-extension.compact button .top {
+    color: rgb(35, 35, 35);
+    font-size: 14px;
+}
+
+.sidebar-extension.compact button .bottom {
+    color: rgb(120,120,120);
+    font-size: 12px;
 }
 
 .sidebar-extension button:hover {
@@ -261,6 +265,9 @@ button:hover {
     font-size: 16px;
     line-height: 16px;
     margin: 0 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .sidebar-extension.compact {
@@ -279,6 +286,9 @@ button:hover {
 
 .sidebar-extension.compact button span {
     /* font-weight: bold; */
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 14px;
 }
 
@@ -288,6 +298,9 @@ button:hover {
     line-height: 14px;
     font-weight: regular;
     margin: 0 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .sidebar-extension.second {
@@ -689,4 +702,129 @@ textarea:focus, input:focus {
     position: relative;
     top: 50%;
     transform: translateY(-30%);
+}
+
+@media only screen and (max-width: 1300px) {
+    #incognito-button {
+        background-size: 50px 50px;
+        height: 80px;
+        width: 80px;
+        margin-left: -40px;
+        transition: 0.1s;
+    }
+}
+
+@media only screen and (max-width: 1100px) {
+    .sidebar-extension button div.center-container-left {
+        display: none;
+    }
+
+    .sidebar-extension button div.center-container-right { 
+        width: 100%;
+        padding: 10px 10px 10px 10px;
+    }
+
+    .sidebar-extension .special span {
+        margin-left: 0px;
+    }
+
+    .sidebar-extension.compact .special span {
+        margin-left: 0px;
+    }
+
+    #incognito-button {
+        border-width: 1px;
+        background-size: 35px 35px;
+        height: 60px;
+        width: 60px;
+        margin-left: -30px;
+        transition: 0.1s;
+    }
+
+    #incognito-button.active {
+        border-width: 1px;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    /* Compact sidebar */
+    .sidebar {
+        width: 70px;
+    }
+
+    .logo-small {
+        margin-left: 0px;
+        height: 50px;
+        width: 50px;
+        transition: 0.1s;
+    }
+
+    .sidebar-extension {
+        left: 70px;
+        width: calc(30% - 70px);
+    }
+
+    .sidebar button {
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: 35px 35px;
+        margin: 10px 10px;
+        height: 50px;
+        width: 50px;
+        font-size: 0px;
+    }
+    
+    .sidebar button#browse {
+        background-image: url(search.png);
+    }
+    
+    .sidebar button#courses {
+        background-image: url(course.png);
+    }
+    
+    .sidebar button#groups {
+        background-image: url(group.png);
+    }
+    
+    .sidebar button#logout {
+        background-image: url(signout.png);
+    }
+
+    #incognito-button {
+        background-size: 30px 30px;
+        height: 50px;
+        width: 50px;
+        margin-left: -25px;
+        transition: 0.1s;
+    }
+}
+
+@media only screen and (max-width: 850px) {
+    .sidebar-extension button.gray .top {
+        color: #B2B2B2;
+    }
+    .sidebar-extension button.blue .top {
+        color: #008EBB;
+    }
+    .sidebar-extension button.pink .top {
+        color: #C4357F;
+    }
+    .sidebar-extension button.orange .top {
+        color: rgb(226, 109, 1);
+    }
+    .sidebar-extension button .top {
+        font-size: 18px;
+    }
+    .sidebar-extension button .middle {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .sidebar-extension button .top {
+        font-size: 14px;
+    }
+    .sidebar-extension button .bottom {
+        display: none;
+    }
 }

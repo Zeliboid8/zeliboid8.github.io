@@ -11,7 +11,7 @@ var googlePhoto;
 var displayedCourse;  // The course ID of the assignments displayed in the sidebar;
 var courseID;       // The course ID of the user's current chat room;
 var assignmentID;
-var courses;
+var courses = [];
 
 if (document.location.href.includes("localhost")) {
     serverURL = devServerURL;

@@ -150,7 +150,7 @@ function loadCourseAssignments(courseID) {
                 });
                 var innerText = document.createElement("div");
                 innerText.innerHTML = `<span class="top">${assignment.name}</span>
-                                        <span class="bottom">${assignment.num_messages} Message${assignment.num_messages == 1 ? "" : "s"}</span>`;
+                                        <span class="bottom">${assignment.last_message == null ? "Send a message..." : `${getFirstName(assignment.last_message_name)}: ${assignment.last_message}`}</span>`;
                 assignmentButton.appendChild(innerText);
                 sidebarExtension2.appendChild(assignmentButton);
             });
@@ -206,7 +206,7 @@ function getRecentAssignments(user) {
         });
         var innerText = document.createElement("div");
         innerText.innerHTML = `<span class="top">${assignment.name}</span>
-                                <span class="bottom">${assignment.num_messages} Message${assignment.num_messages == 1 ? "" : "s"}</span>`;
+        <span class="bottom">${assignment.last_message == null ? "Send a message..." : `${getFirstName(assignment.last_message_name)}: ${assignment.last_message}`}</span>`;
         assignmentButton.appendChild(innerText);
         sidebarExtension.appendChild(assignmentButton);
     });
@@ -355,6 +355,7 @@ function toggleIncognito(button) {
 }
 
 function displayModal(styleName) {
+    document.getElementById("modal-field").value = "";
     if (styleName == "class") {
         fetchCourses();
         document.getElementById("modal-title").innerHTML = "Search for a class:"
@@ -374,15 +375,14 @@ function hideModal() {
 }
 
 function fetchCourses() {
-    if (!courses) {
+    if (courses.length == 0) {
         let req = new XMLHttpRequest();
         let classesURL = `${serverURL}/api/courses/`;
-        var classes;
         req.open("GET", classesURL, true);
         req.onreadystatechange = (e) => {
             if (req.readyState == 4 && req.status == 200) {
-                classes = JSON.parse(req.responseText);
-                addClassRows(classes);
+                courses = JSON.parse(req.responseText);
+                addClassRows(courses);
             }
         }
         req.send();
@@ -414,7 +414,7 @@ function addAssignmentToSidebar(data) {
     assignmentButton.type = "button";
     var innerText = document.createElement("div");
         innerText.innerHTML = `<span class="top">${data.assignmentName}</span>
-                                <span class="bottom">0 Messages</span>`;
+                                <span class="bottom">Send a message...</span>`;
     assignmentButton.appendChild(innerText);
     assignmentButton.addEventListener("click", () => {
         setChatName(`${displayedCourse.subject} ${displayedCourse.number}`, displayedCourse.name, data.assignmentName);
@@ -449,6 +449,10 @@ function filter() {
             rows[i].style.display = "none";
         }
     }
+}
+
+function getFirstName(fullName) {
+    return fullName.split(" ")[0];
 }
 
 function addClass(course) {
