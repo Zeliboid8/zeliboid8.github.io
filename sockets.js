@@ -78,21 +78,21 @@ sockets = function() {
         socket.emit('leave_course', {courseID, name}, callback);
         unregisterAssignmentHandler();
     }
-    function joinAssignment(assignmentID, courseID, googleID, name, callback) {
+    function joinAssignment(assignmentID, courseID, name, callback) {
         window.assignmentID = assignmentID;
         window.courseID = courseID;
-        socket.emit('join_assignment', {assignmentID, courseID, googleID, name}, callback)
+        socket.emit('join_assignment', {assignmentID, courseID, name}, callback)
         registerMessageHandler();
     }
-    function leaveAssignment(assignmentID, courseID, googleID, name, callback) {
-        socket.emit('leave_assignment', {assignmentID, courseID, googleID, name}, callback)
+    function leaveAssignment(assignmentID, courseID, name, callback) {
+        socket.emit('leave_assignment', {assignmentID, courseID, name}, callback)
         unregisterMessageHandler();
     }
-    function messageCourse(assignmentID, courseID, googleID, name, photoLink, sessionToken, time, message, callback) {
-        socket.emit('message', {assignmentID, courseID, googleID, name, photoLink, sessionToken, time, message}, callback)
+    function messageCourse(assignmentID, courseID, name, photoLink, time, message, callback) {
+        socket.emit('message', {assignmentID, courseID, name, photoLink, time, message}, callback)
     }
-    function addAssignment(courseID, assignmentName, googleID, callback) {
-        socket.emit('new_assignment', {courseID, assignmentName, googleID}, callback)
+    function addAssignment(courseID, assignmentName, callback) {
+        socket.emit('new_assignment', {courseID, assignmentName}, callback)
     }
 
     return {
