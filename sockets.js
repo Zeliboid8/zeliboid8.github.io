@@ -1,12 +1,11 @@
 // Setting up sockets with socket.io
 
-let clientScript = document.createElement("script");
-clientScript.src = `${serverURL}/socket.io/socket.io.js`;
-var head = document.getElementsByTagName('head')[0];
-head.appendChild(clientScript);
-
 sockets = function() {
     let socket;
+    let clientScript = document.createElement("script");
+    clientScript.src = `${serverURL}/socket.io/socket.io.js`;
+    var head = document.getElementsByTagName('head')[0];
+    head.appendChild(clientScript);
 
     function init(queryParams, callback) {
         if (queryParams) {
@@ -47,7 +46,7 @@ sockets = function() {
                         head.appendChild(newScript);
                         clientScript = newScript;
                         init(queryParams, callback)
-                    }, 5000);
+                    }, 3000);
                 }
             }
         }
@@ -94,6 +93,12 @@ sockets = function() {
     function addAssignment(courseID, assignmentName, callback) {
         socket.emit('new_assignment', {courseID, assignmentName}, callback)
     }
+    function getUserInfo(callback) {
+        socket.emit('get_user_info', callback)
+    }
+    function addCourseToUser(courseID, callback) {
+        socket.emit('add_user_to_course', {courseID}, callback)
+    }
 
     return {
         init: init,
@@ -102,6 +107,8 @@ sockets = function() {
         joinAssignment: joinAssignment,
         leaveAssignment: leaveAssignment,
         messageCourse: messageCourse,
-        addAssignment: addAssignment
+        addAssignment: addAssignment,
+        getUserInfo: getUserInfo,
+        addCourseToUser: addCourseToUser
     }
 }();

@@ -62,16 +62,9 @@ function clearMessages() {
 }
 
 function loadRecentCourses() {
-    let req = new XMLHttpRequest();
-    let userURL = `${serverURL}/api/user/${googleID}/`;
-    req.open("GET", userURL, true);
-    req.onreadystatechange = (e) => {
-        if (req.readyState == 4 && req.status == 200) {
-            let user = JSON.parse(req.responseText)
-            getRecentCourses(user);
-        }
-    }
-    req.send();
+    sockets.getUserInfo((user) => {
+        getRecentCourses(user);
+    })
 }
 
 function getColor(num) {
@@ -133,54 +126,40 @@ function getRecentCourses(user) {
 }
 
 function loadCourseAssignments(courseID) {
-    let req = new XMLHttpRequest();
-    let assignmentsURL = `${serverURL}/api/course/${courseID}/assignments/`;
-    req.open("GET", assignmentsURL, true);
-    req.onreadystatechange = (e) => {
-        if (req.readyState == 4 && req.status == 200) {
-            var assignments = JSON.parse(req.responseText);
-            var sidebarExtension2 = document.getElementsByClassName("sidebar-extension second")[0];
-            clearElements(sidebarExtension2);
-            assignments.forEach((assignment) => {
-                var assignmentButton = document.createElement("button");
-                assignmentButton.type = "button";
-                assignmentButton.addEventListener("click", () => {
-                    setChatName(`${displayedCourse.subject} ${displayedCourse.number}`, displayedCourse.name, assignment.name);
-                    openMessages(assignment.course_id, assignment.assignment_id);
-                });
-                var innerText = document.createElement("div");
-                innerText.innerHTML = `<span class="top">${assignment.name}</span>
-                                        <span class="bottom">${assignment.last_message == null ? "Send a message..." : `${getFirstName(assignment.last_message_name)}: ${assignment.last_message}`}</span>`;
-                assignmentButton.appendChild(innerText);
-                sidebarExtension2.appendChild(assignmentButton);
+    requests.getAssignmentsInCourse(courseID, (assignments) => {
+        var sidebarExtension2 = document.getElementsByClassName("sidebar-extension second")[0];
+        clearElements(sidebarExtension2);
+        assignments.forEach((assignment) => {
+            var assignmentButton = document.createElement("button");
+            assignmentButton.type = "button";
+            assignmentButton.addEventListener("click", () => {
+                setChatName(`${displayedCourse.subject} ${displayedCourse.number}`, displayedCourse.name, assignment.name);
+                openMessages(assignment.course_id, assignment.assignment_id);
             });
-            var addButton = document.createElement("button");
-            addButton.type = "button";
-            addButton.className = "special";
-            var innerText = document.createElement("span");
-            innerText.innerHTML = "Add an assignment...";
-            addButton.appendChild(innerText);
-            addButton.addEventListener("click", () => {
-                displayModal("assignment");
-            });
-            sidebarExtension2.appendChild(addButton);
-        }
-    }
-    req.send();
-    openCourseAssignments();
+            var innerText = document.createElement("div");
+            innerText.innerHTML = `<span class="top">${assignment.name}</span>
+                                    <span class="bottom">${assignment.last_message == null ? "Send a message..." : `${getFirstName(assignment.last_message_name)}: ${assignment.last_message}`}</span>`;
+            assignmentButton.appendChild(innerText);
+            sidebarExtension2.appendChild(assignmentButton);
+        });
+        var addButton = document.createElement("button");
+        addButton.type = "button";
+        addButton.className = "special";
+        var innerText = document.createElement("span");
+        innerText.innerHTML = "Add an assignment...";
+        addButton.appendChild(innerText);
+        addButton.addEventListener("click", () => {
+            displayModal("assignment");
+        });
+        sidebarExtension2.appendChild(addButton);
+    })
+    openCourseAssignmentsSidebar();
 }
 
 function loadRecentAssignments() {
-    let req = new XMLHttpRequest();
-    let userURL = `${serverURL}/api/user/${googleID}/`;
-    req.open("GET", userURL, true);
-    req.onreadystatechange = (e) => {
-        if (req.readyState == 4 && req.status == 200) {
-            let user = JSON.parse(req.responseText);
-            getRecentAssignments(user);
-        }
-    }
-    req.send();
+    sockets.getUserInfo((user) => {
+        getRecentAssignments(user)
+    })
 }
 
 function getRecentAssignments(user) {
@@ -191,18 +170,10 @@ function getRecentAssignments(user) {
         var assignmentButton = document.createElement("button");
         assignmentButton.type = "button";
         assignmentButton.addEventListener("click", () => {
-            let courseURL = `${serverURL}/api/course/${assignment.course_id}/`;
-            let req = new XMLHttpRequest();
-            req.open("GET", courseURL, true);
-            req.onreadystatechange = (e) => {
-                if (req.readyState == 4 && req.status == 200) {
-                    let course = JSON.parse(req.responseText);
-                    setChatName(`${course.subject} ${course.number}`, course.name, assignment.name);
-                    openMessages(assignment.course_id, assignment.assignment_id);
-                }
-            }
-            req.send();
-           
+            requests.getCourseInfo(assignment.course_id, (course) => {
+                setChatName(`${course.subject} ${course.number}`, course.name, assignment.name);
+                openMessages(assignment.course_id, assignment.assignment_id);
+            })
         });
         var innerText = document.createElement("div");
         innerText.innerHTML = `<span class="top">${assignment.name}</span>
@@ -214,39 +185,32 @@ function getRecentAssignments(user) {
 
 function openMessages(courseID, assignmentID) {
     if (inRoom) {
-        sockets.leaveAssignment(window.assignmentID, window.courseID, googleID, name, () => {
+        sockets.leaveAssignment(window.assignmentID, window.courseID, name, () => {
                 inRoom = false;
                 console.log("Left room successfully.")
-                sockets.joinAssignment(assignmentID, courseID, googleID, name, () => {
+                sockets.joinAssignment(assignmentID, courseID, name, () => {
                     window.assignmentID = assignmentID;
                     window.courseID = courseID;
                     inRoom = true;
                     console.log("Joined room successfully.")
-                })
+                });
         });
     }
     else {
-        sockets.joinAssignment(assignmentID, courseID, googleID, name, () => {
+        sockets.joinAssignment(assignmentID, courseID, name, () => {
             inRoom = true;
             console.log("Joined room successfully.")
         })
     }
-    let req = new XMLHttpRequest();
-    let messagesURL = `${serverURL}/api/course/${courseID}/assignment/${assignmentID}/`;
-    req.open("GET", messagesURL, true);
-    req.onreadystatechange = (e) => {
-        if (req.readyState == 4 && req.status == 200) {
-            messages = JSON.parse(req.responseText);
-            clearMessages();
-            addMessages(messages);
-        }
-    }
-    req.send();
+    requests.getMessagesInAssignment(courseID, assignmentID, (messages) => {
+        clearMessages();
+        addMessages(messages);
+    });
 }
 
 function closeMessages() {
     if (inRoom) {
-        sockets.leaveAssignment(assignmentID, courseID, googleID, name, () => {
+        sockets.leaveAssignment(assignmentID, courseID, name, () => {
             inRoom = false;
             console.log("Left assignment successfully.")
         })
@@ -266,8 +230,7 @@ function sendMessage() {
     var time = new Date().toISOString().slice(0, 19)
     if (messageField.value != '') {
         messageField.value = '';
-        let sessionToken = getSessionToken();
-        sockets.messageCourse(assignmentID, courseID, googleID, name, photoLink, sessionToken, time, message, (success) => 
+        sockets.messageCourse(assignmentID, courseID, name, photoLink, time, message, (success) => 
             {
                 if (success) {
                     console.log("Message sent successfully.");
@@ -280,20 +243,20 @@ function sendMessage() {
     return false;
 }
 
-function openCourses() {
+function openCoursesSidebar() {
     loadRecentCourses();
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension";
     document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden";
     document.getElementById("main").className = "one-sidebar";
 }
 
-function openCourseAssignments() {
+function openCourseAssignmentsSidebar() {
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension";
     document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second compact"
     document.getElementById("main").className = "two-sidebars";
 }
 
-function openAssignments() {
+function openAssignmentsSidebar() {
     loadRecentAssignments();
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension compact";
     document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden"
@@ -341,22 +304,15 @@ function hideModal() {
 
 function fetchCourses() {
     if (courses.length == 0) {
-        let req = new XMLHttpRequest();
-        let classesURL = `${serverURL}/api/courses/`;
-        req.open("GET", classesURL, true);
-        req.onreadystatechange = (e) => {
-            if (req.readyState == 4 && req.status == 200) {
-                courses = JSON.parse(req.responseText);
-                addClassRows(courses);
-            }
-        }
-        req.send();
+        requests.getCourses((courses) => {
+            addClassRows(courses);
+        })
     }
 }
 
 function submitModal() {
     if (document.getElementById("confirm-modal").className == "submit") {
-        sockets.addAssignment(displayedCourse.course_id, document.getElementById("modal-field").value.trim(), googleID, (result) => {
+        sockets.addAssignment(displayedCourse.course_id, document.getElementById("modal-field").value.trim(), (result) => {
             hideModal();
         });
     }
@@ -421,56 +377,44 @@ function getFirstName(fullName) {
 }
 
 function addClass(course) {
-    let req = new XMLHttpRequest();
-    let url = `${serverURL}/api/user_course/`;
-    req.open("POST", url, true);
-    req.setRequestHeader("Content-Type", "application/json");
-    req.onreadystatechange = (e) => {
-        if (req.readyState == 4) {
-            if (req.status == 201) {
-                console.log("Class successfully added.")
-                var sidebarExtension = document.getElementsByClassName("sidebar-extension")[0];
-                let courseButton = document.createElement("button");
-                var color = getColor(course.num_assignments);
-                courseButton.classList.add(color);
-                let courseButtonHTML = `<div class="selected-container"><div class="center-container-left"><span class="dot"></span></div>
-                                        <div class="center-container-right">
-                                            <span class="top">${course.subject} ${course.number}</span>
-                                            <span class="middle">${course.name}</span>
-                                            <span class="bottom">${course.num_assignments} Assignments</span>
-                                        </div></div>`
-                courseButton.type = "button";
-                courseButton.innerHTML = courseButtonHTML;
-                courseButton.addEventListener("click", () => {
-                    if (displayedCourse) {
-                        sockets.leaveCourse(displayedCourse.course_id, name, () => {
-                            console.log(`Successfully left previous course.`);
-                        });
-                    }
-                    displayedCourse = course;
-                    sockets.joinCourse(course.course_id, name, () => {
-                        console.log("Successfully joined course.");
-                    })
-                    Array.from(courseButton.parentElement.children).forEach((child) => {
-                        child.classList.remove("selected");
-                    })
-                    courseButton.classList.add("selected");
-                    loadCourseAssignments(course.course_id)
-                });
-                sidebarExtension.insertBefore(courseButton, sidebarExtension.lastElementChild)
-                hideModal();
-            }
-            else if (req.status == 200) {
-                console.log("Class already added!")
-            }
+    addCourseToUser((result) => {
+        if (result.success) {
+            console.log("Class successfully added.")
+            var sidebarExtension = document.getElementsByClassName("sidebar-extension")[0];
+            let courseButton = document.createElement("button");
+            var color = getColor(course.num_assignments);
+            courseButton.classList.add(color);
+            let courseButtonHTML = `<div class="selected-container"><div class="center-container-left"><span class="dot"></span></div>
+                                    <div class="center-container-right">
+                                        <span class="top">${course.subject} ${course.number}</span>
+                                        <span class="middle">${course.name}</span>
+                                        <span class="bottom">${course.num_assignments} Assignments</span>
+                                    </div></div>`
+            courseButton.type = "button";
+            courseButton.innerHTML = courseButtonHTML;
+            courseButton.addEventListener("click", () => {
+                if (displayedCourse) {
+                    sockets.leaveCourse(displayedCourse.course_id, name, () => {
+                        console.log(`Successfully left previous course.`);
+                    });
+                }
+                displayedCourse = course;
+                sockets.joinCourse(course.course_id, name, () => {
+                    console.log("Successfully joined course.");
+                })
+                Array.from(courseButton.parentElement.children).forEach((child) => {
+                    child.classList.remove("selected");
+                })
+                courseButton.classList.add("selected");
+                loadCourseAssignments(course.course_id)
+            });
+            sidebarExtension.insertBefore(courseButton, sidebarExtension.lastElementChild)
+            hideModal();
         }
-    }
-    let params = JSON.stringify({
-        "action": "add",
-        "google_id": googleID,
-        "course_id": course.course_id
+        else {
+            console.log(result.error);
+        }
     });
-    req.send(params);
 }
 
 function setChatName(courseNumber, courseName, assignmentName) {

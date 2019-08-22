@@ -11,7 +11,7 @@ gapi.load('auth2', function() {
             document.location.href = `/login.html`;
         }
         else {
-            getUserInfo();
+            loadUserData();
         }
     });
 });
@@ -38,7 +38,7 @@ function fetchCourses() {
     req.send();
 }
 
-function getUserInfo() {
+function loadUserData() {
     const req = new XMLHttpRequest();
     const userURL = `${serverURL}/api/user/${googleID}/`;
     req.open("GET", userURL, true);

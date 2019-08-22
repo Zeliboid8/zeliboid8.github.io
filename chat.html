@@ -6,6 +6,7 @@
     <script src="https://apis.google.com/js/api:client.js"></script>
     <script type="text/javascript" src="variables.js"></script>
     <script type="text/javascript" src="sockets.js"></script>
+    <script type="text/javascript" src="requests.js"></script>
     <script type="text/javascript" src="user_interface.js"></script>
     <script type="text/javascript" src="cookies.js"></script>
 
@@ -100,12 +101,12 @@
             document.location.href = "/browse.html"
         });
         document.getElementById("courses").addEventListener("click", () => {
-            openCourses();
+            openCoursesSidebar();
             document.getElementById("courses").className = "selected";
             document.getElementById("groups").classList.remove("selected");
         });
         document.getElementById("groups").addEventListener("click", () => {
-            openAssignments();
+            openAssignmentsSidebar();
             document.getElementById("groups").className = "selected";
             document.getElementById("courses").classList.remove("selected");
         });
