@@ -87,7 +87,12 @@ function getRecentCourses(user) {
         var color = getColor(course.num_assignments);
         let courseButton = document.createElement("button");
         courseButton.classList.add(color);
-        let courseButtonHTML = `<div class="selected-container"><div class="center-container-left"><span class="dot"></span></div>
+        let dot = document.createElement("span");
+        dot.className = "dot";
+        dot.addEventListener("click", () => {
+            removeCourse(course, () => {});
+        });
+        let courseButtonHTML = `<div class="selected-container"><div class="center-container-left"></div>
                                 <div class="center-container-right">
                                     <span class="top">${course.subject} ${course.number}</span>
                                     <span class="middle">${course.name}</span>
@@ -96,6 +101,7 @@ function getRecentCourses(user) {
         courseButton.type = "button";
         courseButton.dataset.id = course.course_id;
         courseButton.innerHTML = courseButtonHTML;
+        courseButton.firstElementChild.firstElementChild.appendChild(dot);
         courseButton.addEventListener("click", () => {
             if (displayedCourse) {
                 sockets.leaveCourse(displayedCourse.course_id, name, () => {
@@ -389,7 +395,12 @@ function addCourse(course, callback) {
             let courseButton = document.createElement("button");
             var color = getColor(course.num_assignments);
             courseButton.classList.add(color);
-            let courseButtonHTML = `<div class="selected-container"><div class="center-container-left"><span class="dot"></span></div>
+            let dot = document.createElement("span");
+            dot.className = "dot";
+            dot.addEventListener("click", () => {
+                removeCourse(course, () => {});
+            });
+            let courseButtonHTML = `<div class="selected-container"><div class="center-container-left"></div>
                                     <div class="center-container-right">
                                         <span class="top">${course.subject} ${course.number}</span>
                                         <span class="middle">${course.name}</span>
@@ -398,6 +409,7 @@ function addCourse(course, callback) {
             courseButton.type = "button";
             courseButton.dataset.id = course.course_id;
             courseButton.innerHTML = courseButtonHTML;
+            courseButton.firstElementChild.firstElementChild.appendChild(dot);
             courseButton.addEventListener("click", () => {
                 if (displayedCourse) {
                     sockets.leaveCourse(displayedCourse.course_id, name, () => {

@@ -156,6 +156,26 @@ button:hover {
     border-radius: 15px;
 }
 
+.sidebar-extension button span:hover {
+    background-color: rgb(240, 240, 240);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: 15px 15px;
+}
+
+.sidebar-extension button span:hover.dot {
+    background-image: url(delete.png);
+    border-radius: 33px;
+    border: 5px solid rgb(230, 230, 230);
+    background-color: transparent;
+    transition: border 0.2s;
+}
+
+.sidebar-extension button.selected span:hover.dot {
+    background-image: url(delete-dark.png);
+    transition: border 0.2s;
+}
+
 .sidebar-extension button.selected span.dot {
     height: 30px;
     width: 30px;
@@ -734,7 +754,7 @@ textarea:focus, input:focus {
 
 #browse .search-box {
     background: rgb(190, 190, 190);
-    width: 800px;
+    width: 80%;
     border-radius: 25px;
     height: 25px;
     padding: 10px;
@@ -764,17 +784,15 @@ textarea:focus, input:focus {
     font-size: 15px;
     line-height: 25px;
     font-family: 'Roboto', sans-serif;
-    width: 780px;
+    width: 100%;
     padding-left: 10px;
     padding-right: 10px;
 }
 
 #browse li {
-    /* border-radius: 3px; */
     padding: 25px 30px;
     display: flex;
     justify-content: space-between;
-    /* margin-bottom: 10px; */
 }
 
 .table-header {
@@ -784,7 +802,6 @@ textarea:focus, input:focus {
     font-size: 21px;
     color: white;
     font-family: 'Roboto', sans-serif;
-    /* text-transform: uppercase; */
     letter-spacing: 0.03em;
 }
 
