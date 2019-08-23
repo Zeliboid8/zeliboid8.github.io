@@ -156,7 +156,7 @@ button:hover {
     border-radius: 15px;
 }
 
-.sidebar-extension button span:hover {
+.sidebar-extension button span:hover.dot {
     background-color: rgb(240, 240, 240);
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -171,9 +171,20 @@ button:hover {
     transition: border 0.2s;
 }
 
-.sidebar-extension button.selected span:hover.dot {
-    background-image: url(delete-dark.png);
-    transition: border 0.2s;
+.sidebar-extension button.selected.gray span:hover.dot {
+    background-image: url(delete-gray.png);
+}
+
+.sidebar-extension button.selected.blue span:hover.dot {
+    background-image: url(delete-blue.png);
+}
+
+.sidebar-extension button.selected.pink span:hover.dot {
+    background-image: url(delete-pink.png);
+}
+
+.sidebar-extension button.selected.orange span:hover.dot {
+    background-image: url(delete-orange.png);
 }
 
 .sidebar-extension button.selected span.dot {
@@ -970,28 +981,28 @@ textarea:focus, input:focus {
         font-size: 0px;
     }
     
-    .sidebar button#browse {
+    .sidebar button#browse-button {
         background-image: url(search.png);
     }
-    .sidebar button:hover#browse {
+    .sidebar button:hover#browse-button {
         background-image: url(search-dark.png);
     }
     
-    .sidebar button#courses {
+    .sidebar button#courses-button {
         background-image: url(course.png);
     }
-    .sidebar button:hover#courses {
+    .sidebar button:hover#courses-button {
         background-image: url(course-dark.png);
     }
     
-    .sidebar button#groups {
+    .sidebar button#groups-button {
         background-image: url(group.png);
     }
-    .sidebar button:hover#groups {
+    .sidebar button:hover#groups-button {
         background-image: url(group-dark.png);
     }
     
-    .sidebar button#logout {
+    .sidebar button#logout-button {
         background-image: url(signout.png);
     }
     .sidebar button:hover#logout {
