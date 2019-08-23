@@ -320,7 +320,7 @@ button:hover {
     transition: 0.25s;
 }
 
-.sidebar-extension.second.hidden {
+.sidebar-extension.second.collapsed {
     width: 0%;
 }
 
@@ -723,9 +723,165 @@ textarea:focus, input:focus {
     transform: translateY(-30%);
 }
 
-.hidden {
-    width: 0px;
+.browse-container {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: 'Roboto', sans-serif;
 }
+
+#browse .search-box {
+    background: rgb(190, 190, 190);
+    width: 800px;
+    border-radius: 25px;
+    height: 25px;
+    padding: 10px;
+    display: inline-block;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+#browse .search-box:hover {
+    background: rgba(200, 200, 200);
+    transition: 0.3s;
+}
+
+#browse .search-text::placeholder {
+    color: rgb(40, 40, 40);
+}
+
+#browse .search-text {
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    padding: 0;
+    color: rgb(25, 25, 25);
+    font-size: 15px;
+    line-height: 25px;
+    font-family: 'Roboto', sans-serif;
+    width: 780px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#browse li {
+    /* border-radius: 3px; */
+    padding: 25px 30px;
+    display: flex;
+    justify-content: space-between;
+    /* margin-bottom: 10px; */
+}
+
+.table-header {
+    background-color: rgba(0, 142, 187, 0.5);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    font-size: 21px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    /* text-transform: uppercase; */
+    letter-spacing: 0.03em;
+}
+
+.table-row {
+    background-color: rgba(255, 255, 255, 0);
+    border-bottom: 1px solid rgba(150, 150, 150, 0.5);
+    color: black;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.table-row:hover {
+    background-color:  rgb(200, 200, 200, 0.3);
+    transition: 0.3s;
+}
+
+#table-rows {
+    height:400px; 
+    overflow:auto;
+}
+
+#table-rows:hover::-webkit-scrollbar {
+    visibility: visible;
+    transition: 0.5s;
+}
+
+#table-rows:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+    transition: 0.5s;
+}
+
+#table-rows::-webkit-scrollbar {
+    width: 3px;
+    visibility: hidden;
+}
+
+#table-rows::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.4);
+    visibility: hidden;
+}
+
+.col-1 {
+    flex-basis: 15%;
+}
+
+.col-2 {
+    flex-basis: 15%;
+}
+
+.col-3 {
+    flex-basis: 65%;
+}
+
+.col-4 {
+    flex-basis: 5%;
+}
+
+#browse button.select {
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: 15px 15px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: none;
+    padding: 10px 10px;
+    vertical-align: middle;
+    display: inline-block;
+    margin: auto;
+    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+#browse button.select:hover {
+    cursor: pointer;
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: 0.3s;
+}
+
+#browse button.select.add {
+    background-image: url(plus.svg);
+    background-color: rgba(0, 142, 187, 0.7);
+}
+
+#browse button.select.check {
+    background-image: url(check.svg);
+    background-color: rgb(226, 109, 1);
+    transition: 0.3s;
+}
+
+#browse button.select:focus {
+    outline: none;
+}
+
+
 
 @media only screen and (max-width: 1300px) {
     #incognito-button {
@@ -862,4 +1018,12 @@ textarea:focus, input:focus {
     .sidebar-extension button .bottom {
         display: none;
     }
+}
+
+.hidden {
+    display: none;
+}
+
+.collapsed {
+    width: 0px;
 }

@@ -62,14 +62,14 @@
 <body>
     <div class="sidebar compact">
         <img src="logo-shadow.svg" class="logo-small">
-        <button type="button" id="browse">Browse</button>
-        <button type="button" class="selected" id="courses">My courses</button>
-        <button type="button" id="groups">My groups</button>
-        <button type="button" id="logout">Sign out</button>
+        <button type="button" id="browse-button">Browse</button>
+        <button type="button" class="selected" id="courses-button">My courses</button>
+        <button type="button" id="groups-button">My groups</button>
+        <button type="button" id="logout-button">Sign out</button>
         <button type="button" onclick="toggleIncognito(this)" id="incognito-button"></button>
     </div>
     <div class="sidebar-extension"></div>
-    <div class="sidebar-extension second hidden"></div>
+    <div class="sidebar-extension second collapsed"></div>
     <div id="modal">
         <div id="modal-content">
             <h1 id="modal-title">Search for a class:</h1><button class="close" onclick="hideModal()">&times;</button>
@@ -85,32 +85,57 @@
     
 
     <div id="main">
-        <div id="group-header"><span id="class-name"></span><span id="group-name"></span></div>
-        <div id="message-holder"></div>
-        <div id="message-area">
-            <form name="message-sender" onsubmit="return sendMessage()">
-                <div id="message-send"><input type="submit" value="Send"></div>
-                <div id="message-field"><input placeholder="Type a message..." autocomplete="off"></div>
-            </form>
+        <div id="messaging">
+            <div id="group-header"><span id="class-name"></span><span id="group-name"></span></div>
+            <div id="message-holder"></div>
+            <div id="message-area">
+                <form name="message-sender" onsubmit="return sendMessage()">
+                    <div id="message-send"><input type="submit" value="Send"></div>
+                    <div id="message-field"><input placeholder="Type a message..." autocomplete="off"></div>
+                </form>
+            </div>
         </div>
+
+        <div id="browse" class="hidden">
+            <div class="browse-container">
+                <div class="search-box">
+                    <input id="search" class="search-text" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                    onkeyup="filterBrowse()" name="" placeholder="Search for a class...">
+                </div>
+                <li class="table-header">
+                    <div class="col-1">Subject</div>
+                    <div class="col-2">Number</div>
+                    <div class="col-3">Name</div>
+                    <div class="col-4"></div>
+                </li>
         
+                <div id="table-rows"></div>
+            </div>
+        </div>
     </div>
 
     <script>
-        document.getElementById("browse").addEventListener("click", () => {
-            document.location.href = "/browse.html"
+        document.getElementById("browse-button").addEventListener("click", () => {
+            document.getElementById("browse-button").className = "selected";
+            document.getElementById("groups-button").classList.remove("selected");
+            document.getElementById("courses-button").classList.remove("selected");
+            displayBrowse();
         });
-        document.getElementById("courses").addEventListener("click", () => {
+        document.getElementById("courses-button").addEventListener("click", () => {
+            document.getElementById("courses-button").className = "selected";
+            document.getElementById("browse-button").classList.remove("selected");
+            document.getElementById("groups-button").classList.remove("selected");
+            displayMessaging();
             openCoursesSidebar();
-            document.getElementById("courses").className = "selected";
-            document.getElementById("groups").classList.remove("selected");
         });
-        document.getElementById("groups").addEventListener("click", () => {
+        document.getElementById("groups-button").addEventListener("click", () => {
+            document.getElementById("groups-button").className = "selected";
+            document.getElementById("browse-button").classList.remove("selected");
+            document.getElementById("courses-button").classList.remove("selected");
+            displayMessaging();
             openAssignmentsSidebar();
-            document.getElementById("groups").className = "selected";
-            document.getElementById("courses").classList.remove("selected");
         });
-        document.getElementById("logout").addEventListener("click", signOut);
+        document.getElementById("logout-button").addEventListener("click", signOut);
         document.getElementById("modal-field").addEventListener("keyup", () => {
             if (document.getElementById("confirm-modal").className == "search") {
                 filter();

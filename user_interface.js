@@ -94,6 +94,7 @@ function getRecentCourses(user) {
                                     <span class="bottom">${course.num_assignments} Assignment${course.num_assignments == 1 ? "" : "s"}</span>
                                 </div></div>`
         courseButton.type = "button";
+        courseButton.dataset.id = course.course_id;
         courseButton.innerHTML = courseButtonHTML;
         courseButton.addEventListener("click", () => {
             if (displayedCourse) {
@@ -246,7 +247,7 @@ function sendMessage() {
 function openCoursesSidebar() {
     loadRecentCourses();
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension";
-    document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden";
+    document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second collapsed";
     document.getElementById("main").className = "one-sidebar";
 }
 
@@ -259,7 +260,7 @@ function openCourseAssignmentsSidebar() {
 function openAssignmentsSidebar() {
     loadRecentAssignments();
     document.getElementsByClassName("sidebar-extension")[0].className = "sidebar-extension compact";
-    document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second hidden"
+    document.getElementsByClassName("sidebar-extension second")[0].className = "sidebar-extension second collapsed"
     document.getElementsByClassName("sidebar-extension second")[0].querySelectorAll("button").forEach(
         (child) => {
             child.style.opacity = "1";
@@ -305,7 +306,8 @@ function hideModal() {
 function fetchCourses() {
     if (courses.length == 0) {
         requests.getCourses((courses) => {
-            addClassRows(courses);
+            addModalCourseRows(courses);
+            addBrowseCourseRows(courses);
         })
     }
 }
@@ -344,15 +346,17 @@ function addAssignmentToSidebar(data) {
     secondSidebarExtension.insertBefore(assignmentButton, secondSidebarExtension.lastElementChild)
 }
 
-function addClassRows(classes) {
+function addModalCourseRows(courses) {
+    window.courses = courses
     var tableRows = document.getElementById("search-results");
-    classes.forEach((course) => {
-        let row = document.createElement("row");
+    courses.forEach((course) => {
+        let row = document.createElement("div");
+        row.className = "modal-row";
         let courseID = course.course_id;
         let courseName = `${course.subject} ${course.number}`;
         row.innerHTML = `<div class="search-result" id=${courseID}><div class="center">${courseName}</div></div>`;
         row.firstElementChild.addEventListener("click", () => {
-            addClass(course);
+            addCourse(course, hideModal);
         });
         tableRows.appendChild(row);
     });
@@ -361,7 +365,7 @@ function addClassRows(classes) {
 function filter() {
     var input = document.getElementById("modal-field").value;
     var filter = input.toUpperCase();
-    var rows = document.getElementsByTagName("row");
+    var rows = document.getElementsByClassName("modal-row");
     for (i = 0; i < rows.length; i++) {
         var currRowText = rows[i].firstElementChild.firstElementChild.innerHTML.toUpperCase();
         if (currRowText.indexOf(filter) > -1) {
@@ -376,9 +380,10 @@ function getFirstName(fullName) {
     return fullName.split(" ")[0];
 }
 
-function addClass(course) {
-    addCourseToUser((result) => {
+function addCourse(course, callback) {
+    sockets.addUserToCourse(course.course_id, (result) => {
         if (result.success) {
+            callback();
             console.log("Class successfully added.")
             var sidebarExtension = document.getElementsByClassName("sidebar-extension")[0];
             let courseButton = document.createElement("button");
@@ -391,6 +396,7 @@ function addClass(course) {
                                         <span class="bottom">${course.num_assignments} Assignments</span>
                                     </div></div>`
             courseButton.type = "button";
+            courseButton.dataset.id = course.course_id;
             courseButton.innerHTML = courseButtonHTML;
             courseButton.addEventListener("click", () => {
                 if (displayedCourse) {
@@ -409,7 +415,6 @@ function addClass(course) {
                 loadCourseAssignments(course.course_id)
             });
             sidebarExtension.insertBefore(courseButton, sidebarExtension.lastElementChild)
-            hideModal();
         }
         else {
             console.log(result.error);
@@ -417,7 +422,98 @@ function addClass(course) {
     });
 }
 
+function removeCourse(course, callback) {
+    sockets.removeUserFromCourse(course.course_id, (result) => {
+        if (result.success) {
+            callback();
+            console.log("Class successfully removed.")
+            let sidebarExtension = document.getElementsByClassName("sidebar-extension")[0];
+            sidebarExtension.removeChild(sidebarExtension.querySelectorAll(`[data-id='${course.course_id}']`)[0]);
+        }
+        else {
+            console.log(result.error);
+        }
+    })
+}
+
 function setChatName(courseNumber, courseName, assignmentName) {
     document.getElementById("class-name").innerHTML = `<b>${courseNumber}</b>: ${courseName}`;
     document.getElementById("group-name").innerHTML = assignmentName;
+}
+
+function displayBrowse() {
+    document.getElementById("messaging").classList.add("hidden");
+    document.getElementById("browse").classList.remove("hidden");
+    fetchCourses();
+}
+
+function displayMessaging() {
+    document.getElementById("messaging").classList.remove("hidden");
+    document.getElementById("browse").classList.add("hidden");
+    fetchCourses();
+}
+
+function addBrowseCourseRows(classes) {
+    var tableRows = document.getElementById("table-rows");
+    sockets.getUserInfo((user) => {
+        let selectedCourses = user.courses;
+        classes.forEach((course) => {
+            let div = document.createElement("div");
+            let button = document.createElement("button");
+            if (selectedCourses.some(e => e.course_id === course.course_id)) {
+                button.className = "select check";
+            }
+            else {
+                button.className = "select add";
+            }
+            button.addEventListener("click", () => {
+                browseButtonClick(button, course);
+            })
+            div.appendChild(button);
+            let row = document.createElement("div");
+            row.className = "browse-row";
+            let tableRow = document.createElement("li");
+            tableRow.className = "table-row";
+            tableRow.id = course.course_id;
+            tableRow.innerHTML = `<div class="col-1">${course.subject}</div>
+                                    <div class="col-2">${course.number}</div>
+                                    <div class="col-3">${course.name}</div>`;
+            tableRow.appendChild(button);
+            row.appendChild(tableRow);
+            tableRows.appendChild(row);
+        });
+    })
+
+    function browseButtonClick(button, course) {
+        if (button.className == "select add") {
+            addCourse(course, () => {
+                button.className = "select check";
+            });
+        }
+        else if (button.className == "select check") {
+            removeCourse(course, () => {
+                button.className = "select add";
+            });
+        }
+    }
+}
+
+function filterBrowse() {
+    var input = document.getElementById("search").value;
+    var filter = input.toUpperCase();
+    var rows = document.getElementsByClassName("browse-row");
+    for (i = 0; i < rows.length; i++) {
+        var currRow = rows[i].getElementsByClassName("table-row")[0];
+        var subject = currRow.getElementsByClassName("col-1")[0].textContent.toUpperCase();
+        var number = currRow.getElementsByClassName("col-2")[0].textContent;
+        var name = currRow.getElementsByClassName("col-3")[0].textContent.toUpperCase();
+        var shortTitle = subject + " " + number;
+        var longTitle = subject + " " + number + " - " + name;
+
+        if (shortTitle.indexOf(filter) > -1 || longTitle.indexOf(filter) > -1) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }
+    }
 }

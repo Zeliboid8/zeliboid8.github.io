@@ -96,8 +96,11 @@ sockets = function() {
     function getUserInfo(callback) {
         socket.emit('get_user_info', callback)
     }
-    function addCourseToUser(courseID, callback) {
+    function addUserToCourse(courseID, callback) {
         socket.emit('add_user_to_course', {courseID}, callback)
+    }
+    function removeUserFromCourse(courseID, callback) {
+        socket.emit('remove_user_from_course', {courseID}, callback)
     }
 
     return {
@@ -109,6 +112,7 @@ sockets = function() {
         messageCourse: messageCourse,
         addAssignment: addAssignment,
         getUserInfo: getUserInfo,
-        addCourseToUser: addCourseToUser
+        addUserToCourse: addUserToCourse,
+        removeUserFromCourse: removeUserFromCourse
     }
 }();
