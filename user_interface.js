@@ -349,7 +349,7 @@ function addAssignmentToSidebar(data) {
         setChatName(`${displayedCourse.subject} ${displayedCourse.number}`, displayedCourse.name, data.assignmentName);
         openMessages(displayedCourse.course_id, data.assignmentID)
     });
-    secondSidebarExtension.insertBefore(assignmentButton, secondSidebarExtension.lastElementChild)
+    secondSidebarExtension.insertBefore(assignmentButton, secondSidebarExtension.firstElementChild)
 }
 
 function addModalCourseRows(courses) {
@@ -426,7 +426,7 @@ function addCourse(course, callback) {
                 courseButton.classList.add("selected");
                 loadCourseAssignments(course.course_id)
             });
-            sidebarExtension.insertBefore(courseButton, sidebarExtension.lastElementChild)
+            sidebarExtension.insertBefore(courseButton, sidebarExtension.firstElementChild)
         }
         else {
             console.log(result.error);

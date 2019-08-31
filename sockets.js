@@ -28,10 +28,6 @@ sockets = function() {
                         console.log("Socket error: ", err);
                     }
                 })
-                socket.on('new_token', (data) => {
-                    console.log("New token received: ", data.session_token);
-                    setSessionToken(data.session_token);
-                })
                 socket.on('connect', () => {
                     callback();
                 })

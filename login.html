@@ -35,7 +35,7 @@
                         'idtoken': id_token
                     }
                     var req = new XMLHttpRequest();
-                    req.open('POST', `${serverURL}/tokensignin`, true);
+                    req.open('POST', `${serverURL}/api/tokensignin`, true);
                     req.setRequestHeader('Content-Type', 'application/json');
                     req.onreadystatechange = (e) => {
                         if (req.readyState == 4 && req.status == 200) {
@@ -48,7 +48,7 @@
                             let response = JSON.parse(req.responseText);
                             setSessionToken(response.session_token)
                             setUpdateToken(response.update_token)
-                            document.location.href = `/chat.html`;
+                            window.location = `/chat.html`;
                         }
                         else if (req.readyState == 4 && req.status == 400) {
                             console.log(req.responseText)
