@@ -17,6 +17,7 @@ sockets = function() {
                         init(`googleID=${googleID}&updateToken=${getUpdateToken()}`, callback);
                     }
                     else if (err.session_token) {
+                        console.log(`New session token received: ${err.session_token}`);
                         setSessionToken(err.session_token);
                         init(`googleID=${googleID}&sessionToken=${getSessionToken()}`, callback);
                     }
