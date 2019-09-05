@@ -142,6 +142,9 @@ function loadCourseAssignments(courseID) {
             assignmentButton.addEventListener("click", () => {
                 setChatName(`${displayedCourse.subject} ${displayedCourse.number}`, displayedCourse.name, assignment.name);
                 openMessages(assignment.course_id, assignment.assignment_id);
+                document.getElementById("courses-button").className = "selected";
+                document.getElementById("browse-button").classList.remove("selected");
+                displayMessaging();
             });
             var innerText = document.createElement("div");
             innerText.innerHTML = `<span class="top">${assignment.name}</span>
@@ -180,6 +183,9 @@ function getRecentAssignments(user) {
             requests.getCourseInfo(assignment.course_id, (course) => {
                 setChatName(`${course.subject} ${course.number}`, course.name, assignment.name);
                 openMessages(assignment.course_id, assignment.assignment_id);
+                document.getElementById("groups-button").className = "selected";
+                document.getElementById("browse-button").classList.remove("selected");
+                displayMessaging();
             })
         });
         var innerText = document.createElement("div");
@@ -347,7 +353,10 @@ function addAssignmentToSidebar(data) {
     assignmentButton.appendChild(innerText);
     assignmentButton.addEventListener("click", () => {
         setChatName(`${displayedCourse.subject} ${displayedCourse.number}`, displayedCourse.name, data.assignmentName);
-        openMessages(displayedCourse.course_id, data.assignmentID)
+        openMessages(displayedCourse.course_id, data.assignmentID);
+        document.getElementById("courses-button").className = "selected";
+        document.getElementById("browse-button").classList.remove("selected");
+        displayMessaging();
     });
     secondSidebarExtension.insertBefore(assignmentButton, secondSidebarExtension.firstElementChild)
 }

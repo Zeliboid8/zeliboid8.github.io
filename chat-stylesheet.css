@@ -761,6 +761,15 @@ textarea:focus, input:focus {
     padding-left: 10px;
     padding-right: 10px;
     font-family: 'Roboto', sans-serif;
+    height: 100%;
+}
+
+#browse {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100%;
+    width: 100%;
 }
 
 #browse .search-box {
@@ -772,7 +781,7 @@ textarea:focus, input:focus {
     display: inline-block;
     margin-left: 40px;
     margin-right: 40px;
-    margin-top: 10px;
+    margin-top: 40px;
     margin-bottom: 25px;
 }
 
@@ -801,7 +810,7 @@ textarea:focus, input:focus {
 }
 
 #browse li {
-    padding: 25px 30px;
+    padding: 3% 30px;
     display: flex;
     justify-content: space-between;
 }
@@ -1005,7 +1014,7 @@ textarea:focus, input:focus {
     .sidebar button#logout-button {
         background-image: url(signout.png);
     }
-    .sidebar button:hover#logout {
+    .sidebar button:hover#logout-button {
         background-image: url(signout-dark.png);
     }
 

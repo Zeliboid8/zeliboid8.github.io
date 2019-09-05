@@ -22,7 +22,7 @@ sockets = function() {
                     }
                     else if (err == "Invalid update token") {
                         console.log("Invalid update token. Redirecting to sign in page.");
-                        document.location.href = "/login.html"
+                        window.location = "/login.html"
                     }
                     else {
                         console.log("Socket error: ", err);
