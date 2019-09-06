@@ -8,45 +8,58 @@ sockets = function() {
     head.appendChild(clientScript);
 
     function init(queryParams, callback) {
-        if (queryParams) {
-            try {
-                socket = io.connect(serverURL, {secure: true, query: queryParams});
-                socket.on('error', function (err) {
-                    if (err == "Invalid session token") {
-                        console.log("Updating session token.");
-                        init(`googleID=${googleID}&updateToken=${getUpdateToken()}`, callback);
-                    }
-                    else if (err.session_token) {
-                        console.log(`New session token received: ${err.session_token}`);
-                        setSessionToken(err.session_token);
-                        init(`googleID=${googleID}&sessionToken=${getSessionToken()}`, callback);
-                    }
-                    else if (err == "Invalid update token") {
-                        console.log("Invalid update token. Redirecting to sign in page.");
-                        window.location = "/login.html"
-                    }
-                    else {
-                        console.log("Socket error: ", err);
-                    }
-                })
-                socket.on('connect', () => {
-                    callback();
-                })
-            }
-            catch (err) {
-                if (err.name == "ReferenceError") {
-                    console.log("Couldn't connect to server.");
-                    setTimeout(() => {
-                        head.removeChild(clientScript);
-                        var newScript = document.createElement('script');
-                        newScript.src = `${serverURL}/socket.io/socket.io.js`;
-                        head.appendChild(newScript);
-                        clientScript = newScript;
-                        init(queryParams, callback)
-                    }, 3000);
+        try {
+            socket = io.connect(serverURL, {secure: true, query: queryParams});
+            socket.on('error', function (err) {
+                if (err == "Invalid session token") {
+                    console.log("Invalid session token. Updating...")
+                    updateToken(callback)
                 }
+                else {
+                    console.log("Socket error: ", err);
+                }
+            })
+            socket.on('connect', () => {
+                callback();
+            })
+        }
+        catch (err) {
+            if (err.name == "ReferenceError") {
+                console.log("Couldn't connect to server.");
+                setTimeout(() => {
+                    head.removeChild(clientScript);
+                    var newScript = document.createElement('script');
+                    newScript.src = `${serverURL}/socket.io/socket.io.js`;
+                    head.appendChild(newScript);
+                    clientScript = newScript;
+                    init(queryParams, callback)
+                }, 3000);
             }
         }
+    }
+
+    function updateToken(callback) {
+        let req = new XMLHttpRequest()
+        let updateURL = `${serverURL}/api/updatetoken/`;
+        let params = {
+            'updateToken': getUpdateToken(),
+            'googleID': googleID
+        }
+        req.open("POST", updateURL, true);
+        req.setRequestHeader('Content-Type', 'application/json');
+        req.onreadystatechange = (e) => {
+            if (req.readyState == 4 && req.status == 200) {
+                let sessionToken = JSON.parse(req.responseText).session_token;
+                console.log(sessionToken)
+                setSessionToken(sessionToken)
+                init(`googleID=${googleID}&sessionToken=${sessionToken}`, callback);
+            }
+            else if (req.status == 400) {
+                console.log("Invalid update token. Redirecting to sign in page.");
+                window.location = "/login.html"
+            }
+        }
+        req.send(JSON.stringify(params))
     }
 
     function registerMessageHandler() {

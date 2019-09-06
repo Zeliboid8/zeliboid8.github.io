@@ -32,6 +32,7 @@
                         document.location.href = `/login.html`;
                     }
                     else {
+                        console.log("Logged in.");
                         let profile = auth2.currentUser.get().getBasicProfile()
                         googleID = profile.getId();
                         googleName = profile.getName();

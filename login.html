@@ -30,7 +30,7 @@
                     let id_token = googleUser.getAuthResponse().id_token;
 
                     // Sending id token to backend server for authentication
-                    params = {
+                    let params = {
                         'platform': 'web',
                         'idtoken': id_token
                     }
