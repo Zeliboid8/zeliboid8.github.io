@@ -48,7 +48,7 @@
                             let response = JSON.parse(req.responseText);
                             setSessionToken(response.session_token)
                             setUpdateToken(response.update_token)
-                            window.location = `/chat.html`;
+                            window.location = `/`;
                         }
                         else if (req.readyState == 4 && req.status == 400) {
                             console.log(req.responseText)
